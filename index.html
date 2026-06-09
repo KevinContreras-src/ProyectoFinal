@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Veterinaria - Sistema de Gestión</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      background-color: #4CAF50;
+      padding: 15px;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #444;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+    }
+
+    .menu {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .menu button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .menu button:hover {
+      background-color: #45a049;
+    }
+
+    .menu button.activo {
+      background-color: #2e7d32;
+      text-decoration: underline;
+    }
+
+    .seccion {
+      display: none;
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .seccion.visible {
+      display: block;
+    }
+
+    .form-grupo {
+      margin-bottom: 12px;
+    }
+
+    .form-grupo label {
+      display: inline-block;
+      width: 160px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-grupo input,
+    .form-grupo select {
+      padding: 6px;
+      width: 260px;
+      border: 1px solid #aaa;
+      font-size: 14px;
+    }
+
+    .btn-enviar {
+      background-color: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .btn-enviar:hover {
+      background-color: #1976D2;
+    }
+
+    .mensaje {
+      margin-top: 10px;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .mensaje.ok {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+      border: 1px solid #4CAF50;
+    }
+
+    .mensaje.error {
+      background-color: #ffcdd2;
+      color: #b71c1c;
+      border: 1px solid #e53935;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 13px;
+      margin-top: 15px;
+    }
+
+    table th {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #aaa;
+    }
+
+    table td {
+      padding: 7px;
+      border: 1px solid #ccc;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .btn-cargar {
+      background-color: #FF9800;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .btn-cargar:hover {
+      background-color: #F57C00;
+    }
+
+    #cargando {
+      color: #888;
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    .tabs-coleccion {
+      margin-bottom: 15px;
+    }
+
+    .tabs-coleccion button {
+      background-color: #e0e0e0;
+      border: 1px solid #bbb;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-right: 4px;
+    }
+
+    .tabs-coleccion button.activo {
+      background-color: #4CAF50;
+      color: white;
+      border-color: #4CAF50;
+    }
+
+    .tabla-contenedor {
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🐾 Sistema de Gestión Veterinaria</h1>
+
+<div class="menu">
+  <button onclick="mostrar('clientes')" id="btn-clientes" class="activo">Clientes</button>
+  <button onclick="mostrar('mascotas')" id="btn-mascotas">Mascotas</button>
+  <button onclick="mostrar('veterinarios')" id="btn-veterinarios">Veterinarios</button>
+  <button onclick="mostrar('citas')" id="btn-citas">Citas</button>
+  <button onclick="mostrar('tratamientos')" id="btn-tratamientos">Tratamientos</button>
+  <button onclick="mostrar('expedientes')" id="btn-expedientes">Expedientes</button>
+  <button onclick="mostrar('ver-registros')" id="btn-ver-registros">📋 Ver Registros BD</button>
+</div>
+
+<!-- ===== CLIENTES ===== -->
+<div class="seccion visible" id="seccion-clientes">
+  <h2>Registrar Cliente</h2>
+  <div class="form-grupo">
+    <label>ID Cliente:</label>
+    <input type="text" id="c_id" placeholder="Ej: CLI001">
+  </div>
+  <div class="form-grupo">
+    <label>Nombre:</label>
+    <input type="text" id="c_nombre" placeholder="Nombre">
+  </div>
+  <div class="form-grupo">
+    <label>Apellido:</label>
+    <input type="text" id="c_apellido" placeholder="Apellido">
+  </div>
+  <div class="form-grupo">
+    <label>Motivo:</label>
+    <input type="text" id="c_motivo" placeholder="Motivo de consulta">
+  </div>
+  <div class="form-grupo">
+    <label>Correo:</label>
+    <input type="email" id="c_correo" placeholder="correo@ejemplo.com">
+  </div>
+  <div class="form-grupo">
+    <label>Teléfono:</label>
+    <input type="text" id="c_telefono" placeholder="Teléfono">
+  </div>
+  <button class="btn-enviar" onclick="guardar('clientes')">Guardar Cliente</button>
+  <div class="mensaje" id="msg-clientes"></div>
+</div>
+
+<!-- ===== MASCOTAS ===== -->
+<div class="seccion" id="seccion-mascotas">
+  <h2>Registrar Mascota</h2>
+  <div class="form-grupo">
+    <label>ID Mascota:</label>
+    <input type="text" id="m_id" placeholder="Ej: MSC001">
+  </div>
+  <div class="form-grupo">
+    <label>Nombre:</label>
+    <input type="text" id="m_nombre" placeholder="Nombre de la mascota">
+  </div>
+  <div class="form-grupo">
+    <label>Especie:</label>
+    <input type="text" id="m_especie" placeholder="Perro, Gato, etc.">
+  </div>
+  <div class="form-grupo">
+    <label>Raza:</label>
+    <input type="text" id="m_raza" placeholder="Raza">
+  </div>
+  <div class="form-grupo">
+    <label>Motivo:</label>
+    <input type="text" id="m_motivo" placeholder="Motivo de consulta">
+  </div>
+  <div class="form-grupo">
+    <label>Fecha Nacimiento:</label>
+    <input type="date" id="m_fecha_nac">
+  </div>
+  <div class="form-grupo">
+    <label>Sexo:</label>
+    <select id="m_sexo">
+      <option value="">-- Seleccionar --</option>
+      <option value="Macho">Macho</option>
+      <option value="Hembra">Hembra</option>
+    </select>
+  </div>
+  <div class="form-grupo">
+    <label>Edad:</label>
+    <input type="number" id="m_edad" placeholder="Años">
+  </div>
+  <div class="form-grupo">
+    <label>ID Cliente (dueño):</label>
+    <input type="text" id="m_id_cliente" placeholder="Ej: CLI001">
+  </div>
+  <button class="btn-enviar" onclick="guardar('mascotas')">Guardar Mascota</button>
+  <div class="mensaje" id="msg-mascotas"></div>
+</div>
+
+<!-- ===== VETERINARIOS ===== -->
+<div class="seccion" id="seccion-veterinarios">
+  <h2>Registrar Veterinario</h2>
+  <div class="form-grupo">
+    <label>ID Veterinario:</label>
+    <input type="text" id="v_id" placeholder="Ej: VET001">
+  </div>
+  <div class="form-grupo">
+    <label>Nombre:</label>
+    <input type="text" id="v_nombre" placeholder="Nombre completo">
+  </div>
+  <div class="form-grupo">
+    <label>Especialidad:</label>
+    <input type="text" id="v_especialidad" placeholder="Especialidad">
+  </div>
+  <div class="form-grupo">
+    <label>Turno:</label>
+    <select id="v_turno">
+      <option value="">-- Seleccionar --</option>
+      <option value="Matutino">Matutino</option>
+      <option value="Vespertino">Vespertino</option>
+      <option value="Nocturno">Nocturno</option>
+    </select>
+  </div>
+  <div class="form-grupo">
+    <label>Teléfono:</label>
+    <input type="text" id="v_telefono" placeholder="Teléfono">
+  </div>
+  <button class="btn-enviar" onclick="guardar('veterinarios')">Guardar Veterinario</button>
+  <div class="mensaje" id="msg-veterinarios"></div>
+</div>
+
+<!-- ===== CITAS ===== -->
+<div class="seccion" id="seccion-citas">
+  <h2>Registrar Cita</h2>
+  <div class="form-grupo">
+    <label>ID Cita:</label>
+    <input type="text" id="ci_id" placeholder="Ej: CIT001">
+  </div>
+  <div class="form-grupo">
+    <label>Fecha:</label>
+    <input type="date" id="ci_fecha">
+  </div>
+  <div class="form-grupo">
+    <label>Tipo:</label>
+    <select id="ci_tipo">
+      <option value="">-- Seleccionar --</option>
+      <option value="Consulta">Consulta</option>
+      <option value="Vacunación">Vacunación</option>
+      <option value="Cirugía">Cirugía</option>
+      <option value="Control">Control</option>
+    </select>
+  </div>
+  <div class="form-grupo">
+    <label>ID Mascota:</label>
+    <input type="text" id="ci_id_mascota" placeholder="Ej: MSC001">
+  </div>
+  <div class="form-grupo">
+    <label>ID Veterinario:</label>
+    <input type="text" id="ci_id_vet" placeholder="Ej: VET001">
+  </div>
+  <button class="btn-enviar" onclick="guardar('citas')">Guardar Cita</button>
+  <div class="mensaje" id="msg-citas"></div>
+</div>
+
+<!-- ===== TRATAMIENTOS ===== -->
+<div class="seccion" id="seccion-tratamientos">
+  <h2>Registrar Tratamiento</h2>
+  <div class="form-grupo">
+    <label>ID Tratamiento:</label>
+    <input type="text" id="t_id" placeholder="Ej: TRA001">
+  </div>
+  <div class="form-grupo">
+    <label>Descripción:</label>
+    <input type="text" id="t_descripcion" placeholder="Descripción del tratamiento">
+  </div>
+  <div class="form-grupo">
+    <label>Estado:</label>
+    <select id="t_estado">
+      <option value="">-- Seleccionar --</option>
+      <option value="Activo">Activo</option>
+      <option value="Completado">Completado</option>
+      <option value="Cancelado">Cancelado</option>
+    </select>
+  </div>
+  <div class="form-grupo">
+    <label>Servicio:</label>
+    <input type="text" id="t_servicio" placeholder="Tipo de servicio">
+  </div>
+  <div class="form-grupo">
+    <label>Costo / Precio:</label>
+    <input type="number" id="t_precio" placeholder="0.00" step="0.01">
+  </div>
+  <button class="btn-enviar" onclick="guardar('tratamientos')">Guardar Tratamiento</button>
+  <div class="mensaje" id="msg-tratamientos"></div>
+</div>
+
+<!-- ===== EXPEDIENTES ===== -->
+<div class="seccion" id="seccion-expedientes">
+  <h2>Registrar Expediente Clínico</h2>
+  <div class="form-grupo">
+    <label>ID Expediente:</label>
+    <input type="text" id="e_id" placeholder="Ej: EXP001">
+  </div>
+  <div class="form-grupo">
+    <label>ID Mascota:</label>
+    <input type="text" id="e_id_mascota" placeholder="Ej: MSC001">
+  </div>
+  <div class="form-grupo">
+    <label>ID Veterinario:</label>
+    <input type="text" id="e_id_vet" placeholder="Ej: VET001">
+  </div>
+  <div class="form-grupo">
+    <label>Alerta Roja:</label>
+    <select id="e_alerta">
+      <option value="No">No</option>
+      <option value="Sí">Sí</option>
+    </select>
+  </div>
+  <button class="btn-enviar" onclick="guardar('expedientes')">Guardar Expediente</button>
+  <div class="mensaje" id="msg-expedientes"></div>
+</div>
+
+<!-- ===== VER REGISTROS ===== -->
+<div class="seccion" id="seccion-ver-registros">
+  <h2>📋 Ver Registros de la Base de Datos</h2>
+  <p style="color:#555; font-size:13px;">Selecciona una colección para cargar sus registros desde MongoDB:</p>
+
+  <div class="tabs-coleccion">
+    <button onclick="seleccionarColeccion('clientes')" id="tab-clientes" class="activo">clientes</button>
+    <button onclick="seleccionarColeccion('mascotas')" id="tab-mascotas">mascotas</button>
+    <button onclick="seleccionarColeccion('mascotas_detalle')" id="tab-mascotas_detalle">mascotas_detalle</button>
+    <button onclick="seleccionarColeccion('veterinarios')" id="tab-veterinarios">veterinarios</button>
+    <button onclick="seleccionarColeccion('veterinarios_detalle')" id="tab-veterinarios_detalle">vet_detalle</button>
+    <button onclick="seleccionarColeccion('citas')" id="tab-citas">citas</button>
+    <button onclick="seleccionarColeccion('citas_detalle')" id="tab-citas_detalle">citas_detalle</button>
+    <button onclick="seleccionarColeccion('tratamientos')" id="tab-tratamientos">tratamientos</button>
+    <button onclick="seleccionarColeccion('tratamientos_detalle')" id="tab-tratamientos_detalle">trat_detalle</button>
+    <button onclick="seleccionarColeccion('expedientes_clinicos')" id="tab-expedientes_clinicos">expedientes</button>
+    <button onclick="seleccionarColeccion('duenos')" id="tab-duenos">duenos</button>
+  </div>
+
+  <button class="btn-cargar" onclick="cargarRegistros()">Cargar Registros</button>
+  <div id="cargando"></div>
+  <div class="tabla-contenedor">
+    <div id="tabla-registros"></div>
+  </div>
+</div>
+
+<script>
+  var coleccionActual = 'clientes';
+
+  function mostrar(seccion) {
+    // Ocultar todas las secciones
+    var secciones = document.querySelectorAll('.seccion');
+    for (var i = 0; i < secciones.length; i++) {
+      secciones[i].classList.remove('visible');
+    }
+    // Mostrar la sección seleccionada
+    document.getElementById('seccion-' + seccion).classList.add('visible');
+
+    // Quitar activo de todos los botones del menú
+    var btns = document.querySelectorAll('.menu button');
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].classList.remove('activo');
+    }
+    document.getElementById('btn-' + seccion).classList.add('activo');
+  }
+
+  function seleccionarColeccion(nombre) {
+    coleccionActual = nombre;
+    // Quitar activo de tabs
+    var tabs = document.querySelectorAll('.tabs-coleccion button');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('activo');
+    }
+    document.getElementById('tab-' + nombre).classList.add('activo');
+    document.getElementById('tabla-registros').innerHTML = '';
+    document.getElementById('cargando').innerText = '';
+  }
+
+  function cargarRegistros() {
+    document.getElementById('cargando').innerText = 'Cargando datos...';
+    document.getElementById('tabla-registros').innerHTML = '';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'api/index.php?accion=listar&coleccion=' + coleccionActual, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        document.getElementById('cargando').innerText = '';
+        if (xhr.status === 200) {
+          try {
+            var datos = JSON.parse(xhr.responseText);
+            if (datos.error) {
+              document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error: ' + datos.error + '</p>';
+              return;
+            }
+            if (datos.length === 0) {
+              document.getElementById('tabla-registros').innerHTML = '<p>No hay registros en esta colección.</p>';
+              return;
+            }
+            // Construir tabla
+            var columnas = Object.keys(datos[0]);
+            var html = '<table><thead><tr>';
+            for (var c = 0; c < columnas.length; c++) {
+              if (columnas[c] !== '_id') {
+                html += '<th>' + columnas[c] + '</th>';
+              }
+            }
+            html += '</tr></thead><tbody>';
+            for (var r = 0; r < datos.length; r++) {
+              html += '<tr>';
+              for (var cc = 0; cc < columnas.length; cc++) {
+                if (columnas[cc] !== '_id') {
+                  var val = datos[r][columnas[cc]];
+                  if (val === null || val === undefined) val = '-';
+                  html += '<td>' + val + '</td>';
+                }
+              }
+              html += '</tr>';
+            }
+            html += '</tbody></table>';
+            document.getElementById('tabla-registros').innerHTML = html;
+          } catch (e) {
+            document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error al parsear respuesta.</p><pre>' + xhr.responseText + '</pre>';
+          }
+        } else {
+          document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error HTTP ' + xhr.status + '</p>';
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  function guardar(coleccion) {
+    var datos = {};
+    var msgEl = document.getElementById('msg-' + coleccion);
+
+    if (coleccion === 'clientes') {
+      datos = {
+        ID_Cliente:  document.getElementById('c_id').value.trim(),
+        Nombre:      document.getElementById('c_nombre').value.trim(),
+        Apellido:    document.getElementById('c_apellido').value.trim(),
+        Motivo:      document.getElementById('c_motivo').value.trim(),
+        Correo:      document.getElementById('c_correo').value.trim(),
+        Telefono:    document.getElementById('c_telefono').value.trim()
+      };
+      if (!datos.ID_Cliente || !datos.Nombre) {
+        mostrarMsg(msgEl, 'ID Cliente y Nombre son obligatorios.', 'error');
+        return;
+      }
+    }
+
+    else if (coleccion === 'mascotas') {
+      datos = {
+        ID_Mascota:       document.getElementById('m_id').value.trim(),
+        Nombre:           document.getElementById('m_nombre').value.trim(),
+        Especie:          document.getElementById('m_especie').value.trim(),
+        Raza:             document.getElementById('m_raza').value.trim(),
+        Motivo:           document.getElementById('m_motivo').value.trim(),
+        Fecha_Nacimiento: document.getElementById('m_fecha_nac').value,
+        Sexo:             document.getElementById('m_sexo').value,
+        Edad:             document.getElementById('m_edad').value,
+        ID_Cliente:       document.getElementById('m_id_cliente').value.trim()
+      };
+      if (!datos.ID_Mascota || !datos.Nombre) {
+        mostrarMsg(msgEl, 'ID Mascota y Nombre son obligatorios.', 'error');
+        return;
+      }
+    }
+
+    else if (coleccion === 'veterinarios') {
+      datos = {
+        ID_Veterinario: document.getElementById('v_id').value.trim(),
+        Nombre:         document.getElementById('v_nombre').value.trim(),
+        Especialidad:   document.getElementById('v_especialidad').value.trim(),
+        Turno:          document.getElementById('v_turno').value,
+        Telefono:       document.getElementById('v_telefono').value.trim()
+      };
+      if (!datos.ID_Veterinario || !datos.Nombre) {
+        mostrarMsg(msgEl, 'ID y Nombre son obligatorios.', 'error');
+        return;
+      }
+    }
+
+    else if (coleccion === 'citas') {
+      datos = {
+        ID_Cita:        document.getElementById('ci_id').value.trim(),
+        Fecha:          document.getElementById('ci_fecha').value,
+        Tipo:           document.getElementById('ci_tipo').value,
+        ID_Mascota:     document.getElementById('ci_id_mascota').value.trim(),
+        ID_Veterinario: document.getElementById('ci_id_vet').value.trim()
+      };
+      if (!datos.ID_Cita) {
+        mostrarMsg(msgEl, 'ID Cita es obligatorio.', 'error');
+        return;
+      }
+    }
+
+    else if (coleccion === 'tratamientos') {
+      datos = {
+        ID_Tratamiento: document.getElementById('t_id').value.trim(),
+        Descripcion:    document.getElementById('t_descripcion').value.trim(),
+        Estado:         document.getElementById('t_estado').value,
+        Servicio:       document.getElementById('t_servicio').value.trim(),
+        Precio:         document.getElementById('t_precio').value
+      };
+      if (!datos.ID_Tratamiento) {
+        mostrarMsg(msgEl, 'ID Tratamiento es obligatorio.', 'error');
+        return;
+      }
+    }
+
+    else if (coleccion === 'expedientes') {
+      datos = {
+        ID_Expediente:  document.getElementById('e_id').value.trim(),
+        ID_Mascota:     document.getElementById('e_id_mascota').value.trim(),
+        ID_Veterinario: document.getElementById('e_id_vet').value.trim(),
+        Alerta_Roja:    document.getElementById('e_alerta').value
+      };
+      if (!datos.ID_Expediente) {
+        mostrarMsg(msgEl, 'ID Expediente es obligatorio.', 'error');
+        return;
+      }
+    }
+
+    msgEl.className = 'mensaje';
+    msgEl.innerText = 'Guardando...';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api/index.php?accion=insertar&coleccion=' + coleccion, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.exito) {
+            mostrarMsg(msgEl, '✔ Registro guardado correctamente en MongoDB.', 'ok');
+          } else {
+            mostrarMsg(msgEl, '✘ Error: ' + (resp.error || 'Error desconocido'), 'error');
+          }
+        } catch(e) {
+          mostrarMsg(msgEl, '✘ Respuesta inválida del servidor.', 'error');
+        }
+      }
+    };
+    xhr.send(JSON.stringify(datos));
+  }
+
+  function mostrarMsg(el, texto, tipo) {
+    el.innerText = texto;
+    el.className = 'mensaje ' + tipo;
+  }
+
+  // Cargar registros al entrar a esa sección
+  document.getElementById('btn-ver-registros').addEventListener('click', function() {
+    cargarRegistros();
+  });
+</script>
+
+</body>
+</html>
