@@ -25,7 +25,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // ============================================================
 //  CONFIGURACION DE CONEXION
 // ============================================================
-define('MONGO_URI', 'mongodb+srv://Kevin_Contreras:@irJordan23@cluster0.llk4xoi.mongodb.net/?appName=Cluster0');
+define('MONGO_URI', getenv('MONGO_URI'));
 define('MONGO_DB',  'veterinaria');   // <-- cambia al nombre de tu base de datos
 
 // ============================================================
