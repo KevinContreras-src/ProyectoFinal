@@ -1,201 +1,217 @@
 <!DOCTYPE html>
+<!-- Declara que este documento es HTML5 -->
 <html lang="es">
+<!-- Abre el documento HTML e indica que el idioma es español -->
+
 <head>
-  <meta charset="UTF-8">
-  <title>Veterinaria - Sistema de Gestión</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+  <!-- Sección de metadatos: no visible en pantalla pero configura el documento -->
   
-    /* ===== HEADER CON LOGO ===== */
+  <meta charset="UTF-8">
+  <!-- Define la codificación de caracteres como UTF-8 para soportar tildes y ñ -->
+  
+  <title>Veterinaria - Sistema de Gestión</title>
+  <!-- Texto que aparece en la pestaña del navegador -->
+
+  <style>
+    /* ===== ESTILOS GLOBALES DEL CUERPO ===== */
+    body {
+      font-family: Arial, sans-serif; /* Fuente principal de todo el sitio */
+      background-color: #f0f0f0;     /* Fondo gris claro para toda la página */
+      margin: 0;                     /* Elimina el margen exterior predeterminado del navegador */
+      padding: 0;                    /* Elimina el relleno interior predeterminado */
+      display: flex;                 /* Activa Flexbox para organizar hijos verticalmente */
+      flex-direction: column;        /* Apila header, main y footer uno sobre otro */
+      min-height: 100vh;             /* La página ocupa al menos el 100% de la altura de la ventana */
+    }
+
+    /* ===== ESTILOS DEL ENCABEZADO (HEADER) ===== */
     header {
-      background-color: #2e7d32;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
+      background-color: #2e7d32;    /* Color verde oscuro de fondo del encabezado */
+      padding: 14px 24px;           /* Relleno interior: 14px arriba/abajo, 24px izquierda/derecha */
+      display: flex;                 /* Flexbox para alinear el logo y el texto en horizontal */
+      align-items: center;           /* Centra verticalmente el logo y el texto */
+      gap: 18px;                     /* Espacio de 18px entre el logo SVG y el texto */
     }
 
     header svg {
-      flex-shrink: 0;
+      flex-shrink: 0; /* Evita que el SVG del logo se encoja si falta espacio */
     }
 
     header .header-text h1 {
-      margin: 0;
-      color: white;
-      font-size: 22px;
-      font-family: Arial, sans-serif;
+      margin: 0;            /* Elimina el margen del título para evitar espacio extra */
+      color: white;         /* Texto del título en blanco */
+      font-size: 22px;      /* Tamaño de fuente del título principal */
+      font-family: Arial, sans-serif; /* Fuente del título (refuerza la global) */
     }
 
     header .header-text p {
-      margin: 2px 0 0;
-      color: #c8e6c9;
-      font-size: 12px;
+      margin: 2px 0 0;      /* Solo 2px de margen arriba, sin margen en los otros lados */
+      color: #c8e6c9;       /* Verde claro pastel para el subtítulo */
+      font-size: 12px;      /* Texto pequeño para el subtítulo descriptivo */
     }
 
-    /* ===== MAIN CONTENT ===== */
+    /* ===== ÁREA PRINCIPAL DE CONTENIDO ===== */
     main {
-      flex: 1;
-      padding: 10px;
+      flex: 1;              /* Ocupa todo el espacio vertical disponible entre header y footer */
+      padding: 10px;        /* Pequeño relleno alrededor del contenido central */
     }
 
     h2 {
-      color: #444;
-      border-bottom: 2px solid #4CAF50;
-      padding-bottom: 5px;
+      color: #444;                          /* Color gris oscuro para los títulos de sección */
+      border-bottom: 2px solid #4CAF50;     /* Línea verde debajo de cada título h2 */
+      padding-bottom: 5px;                  /* Espacio entre el texto y la línea inferior */
     }
 
+    /* ===== BARRA DE NAVEGACIÓN (MENÚ) ===== */
     .menu {
-      text-align: center;
-      margin-bottom: 20px;
-      background-color: #388e3c;
-      padding: 8px 0;
+      text-align: center;           /* Centra los botones del menú horizontalmente */
+      margin-bottom: 20px;          /* Espacio inferior de 20px antes del contenido */
+      background-color: #388e3c;    /* Fondo verde medio para la barra de navegación */
+      padding: 8px 0;               /* Relleno vertical de 8px, sin relleno horizontal */
     }
 
     .menu button {
-      background-color: transparent;
-      color: white;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 8px 14px;
-      margin: 3px;
-      cursor: pointer;
-      font-size: 13px;
-      border-radius: 3px;
+      background-color: transparent;             /* Sin fondo sólido por defecto */
+      color: white;                               /* Texto blanco en los botones */
+      border: 1px solid rgba(255,255,255,0.3);   /* Borde blanco semitransparente */
+      padding: 8px 14px;                          /* Relleno interior del botón */
+      margin: 3px;                                /* Separación de 3px entre botones */
+      cursor: pointer;                            /* Cursor de mano al pasar sobre el botón */
+      font-size: 13px;                            /* Tamaño de texto del botón */
+      border-radius: 3px;                         /* Bordes ligeramente redondeados */
     }
 
     .menu button:hover {
-      background-color: rgba(255,255,255,0.15);
+      background-color: rgba(255,255,255,0.15); /* Fondo blanco translúcido al hacer hover */
     }
 
     .menu button.activo {
-      background-color: #1b5e20;
-      border-color: white;
+      background-color: #1b5e20;   /* Verde muy oscuro cuando el botón está activo/seleccionado */
+      border-color: white;         /* Borde blanco sólido en el botón activo */
     }
 
+    /* ===== SECCIONES DE FORMULARIO ===== */
     .seccion {
-      display: none;
-      background-color: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      display: none;            /* Por defecto, todas las secciones están ocultas */
+      background-color: white;  /* Fondo blanco para cada sección */
+      padding: 20px;            /* Relleno interior de 20px en todos los lados */
+      margin-bottom: 20px;      /* Espacio inferior entre secciones */
+      border: 1px solid #ccc;  /* Borde gris claro alrededor de la sección */
+      border-radius: 4px;       /* Bordes redondeados de 4px */
     }
 
     .seccion.visible {
-      display: block;
+      display: block; /* Muestra la sección cuando tiene la clase 'visible' */
     }
 
+    /* ===== GRUPOS DE CAMPOS DE FORMULARIO ===== */
     .form-grupo {
-      margin-bottom: 12px;
+      margin-bottom: 12px; /* Separación vertical de 12px entre cada campo */
     }
 
     .form-grupo label {
-      display: inline-block;
-      width: 160px;
-      font-weight: bold;
-      font-size: 14px;
+      display: inline-block; /* Permite establecer un ancho fijo al label */
+      width: 160px;           /* Ancho fijo de 160px para alinear todos los labels */
+      font-weight: bold;      /* Texto en negrita para las etiquetas */
+      font-size: 14px;        /* Tamaño de fuente de los labels */
     }
 
     .form-grupo input,
     .form-grupo select {
-      padding: 6px;
-      width: 260px;
-      border: 1px solid #aaa;
-      font-size: 14px;
-      border-radius: 3px;
+      padding: 6px;           /* Relleno interior de los campos de entrada */
+      width: 260px;           /* Ancho fijo de los inputs y selects */
+      border: 1px solid #aaa; /* Borde gris para los campos */
+      font-size: 14px;        /* Tamaño de texto dentro de los campos */
+      border-radius: 3px;     /* Bordes ligeramente redondeados */
     }
 
+    /* ===== BOTÓN PRINCIPAL DE ENVÍO ===== */
     .btn-enviar {
-      background-color: #2196F3;
-      color: white;
-      padding: 9px 18px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      margin-top: 10px;
-      border-radius: 3px;
+      background-color: #2196F3; /* Fondo azul para el botón de guardar */
+      color: white;               /* Texto blanco */
+      padding: 9px 18px;          /* Relleno del botón */
+      border: none;               /* Sin borde visible */
+      cursor: pointer;            /* Cursor de mano */
+      font-size: 14px;            /* Tamaño del texto */
+      margin-top: 10px;           /* Espacio superior */
+      border-radius: 3px;         /* Bordes redondeados */
     }
 
-    .btn-enviar:hover { background-color: #1976D2; }
+    .btn-enviar:hover { background-color: #1976D2; } /* Azul más oscuro al hacer hover */
 
+    /* ===== MENSAJES DE ÉXITO Y ERROR ===== */
     .mensaje {
-      margin-top: 10px;
-      padding: 10px;
-      font-weight: bold;
-      border-radius: 3px;
+      margin-top: 10px;   /* Espacio superior del mensaje */
+      padding: 10px;      /* Relleno interior */
+      font-weight: bold;  /* Texto en negrita */
+      border-radius: 3px; /* Bordes redondeados */
     }
 
     .mensaje.ok {
-      background-color: #c8e6c9;
-      color: #2e7d32;
-      border: 1px solid #4CAF50;
+      background-color: #c8e6c9; /* Fondo verde claro para éxito */
+      color: #2e7d32;             /* Texto verde oscuro para éxito */
+      border: 1px solid #4CAF50; /* Borde verde */
     }
 
     .mensaje.error {
-      background-color: #ffcdd2;
-      color: #b71c1c;
-      border: 1px solid #e53935;
+      background-color: #ffcdd2; /* Fondo rojo claro para error */
+      color: #b71c1c;             /* Texto rojo oscuro para error */
+      border: 1px solid #e53935; /* Borde rojo */
     }
 
-    /* ===== TABLA ===== */
+    /* ===== ESTILOS DE LA TABLA DE REGISTROS ===== */
     table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 13px;
-      margin-top: 15px;
+      border-collapse: collapse; /* Une los bordes de celdas para evitar doble línea */
+      width: 100%;               /* La tabla ocupa todo el ancho disponible */
+      font-size: 13px;           /* Tamaño de fuente dentro de la tabla */
+      margin-top: 15px;          /* Espacio superior antes de la tabla */
     }
 
     table th {
-      background-color: #4CAF50;
-      color: white;
-      padding: 8px;
-      text-align: left;
-      border: 1px solid #aaa;
+      background-color: #4CAF50; /* Fondo verde para las cabeceras de columna */
+      color: white;               /* Texto blanco en las cabeceras */
+      padding: 8px;               /* Relleno de las celdas de cabecera */
+      text-align: left;           /* Texto alineado a la izquierda */
+      border: 1px solid #aaa;    /* Borde gris alrededor de cada celda */
     }
 
     table td {
-      padding: 7px;
-      border: 1px solid #ccc;
+      padding: 7px;              /* Relleno de las celdas de datos */
+      border: 1px solid #ccc;   /* Borde gris claro entre celdas */
     }
 
-    table tr:nth-child(even) { background-color: #f9f9f9; }
-    table tr:hover { background-color: #e8f5e9; }
+    table tr:nth-child(even) { background-color: #f9f9f9; } /* Filas pares con fondo gris muy claro */
+    table tr:hover { background-color: #e8f5e9; }            /* Fondo verde muy claro al hacer hover en fila */
 
-    /* ===== BOTONES DE ACCIÓN EN TABLA ===== */
+    /* ===== BOTONES DE ACCIÓN EN LA TABLA ===== */
     .btn-editar {
-      background-color: #FF9800;
-      color: white;
-      border: none;
-      padding: 4px 10px;
-      cursor: pointer;
-      font-size: 12px;
-      border-radius: 3px;
-      margin-right: 4px;
+      background-color: #FF9800; /* Fondo naranja para el botón de editar */
+      color: white;               /* Texto blanco */
+      border: none;               /* Sin borde */
+      padding: 4px 10px;          /* Relleno compacto para botón pequeño */
+      cursor: pointer;            /* Cursor de mano */
+      font-size: 12px;            /* Texto pequeño */
+      border-radius: 3px;         /* Bordes redondeados */
+      margin-right: 4px;          /* Separación a la derecha del botón eliminar */
     }
 
-    .btn-editar:hover { background-color: #F57C00; }
+    .btn-editar:hover { background-color: #F57C00; } /* Naranja más oscuro al hacer hover */
 
     .btn-eliminar {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 4px 10px;
-      cursor: pointer;
-      font-size: 12px;
-      border-radius: 3px;
+      background-color: #f44336; /* Fondo rojo para el botón de eliminar */
+      color: white;               /* Texto blanco */
+      border: none;               /* Sin borde */
+      padding: 4px 10px;          /* Relleno compacto */
+      cursor: pointer;            /* Cursor de mano */
+      font-size: 12px;            /* Texto pequeño */
+      border-radius: 3px;         /* Bordes redondeados */
     }
 
-    .btn-eliminar:hover { background-color: #c62828; }
+    .btn-eliminar:hover { background-color: #c62828; } /* Rojo más oscuro al hacer hover */
 
+    /* ===== BOTÓN DE CARGAR REGISTROS ===== */
     .btn-cargar {
-      background-color: #FF9800;
+      background-color: #FF9800; /* Naranja igual al botón editar */
       color: white;
       padding: 8px 16px;
       border: none;
@@ -205,102 +221,103 @@
       border-radius: 3px;
     }
 
-    .btn-cargar:hover { background-color: #F57C00; }
+    .btn-cargar:hover { background-color: #F57C00; } /* Naranja más oscuro al hacer hover */
 
     #cargando {
-      color: #888;
-      font-style: italic;
-      margin-top: 8px;
+      color: #888;           /* Gris para el texto de "cargando" */
+      font-style: italic;    /* Texto en cursiva para diferenciarlo */
+      margin-top: 8px;       /* Pequeño espacio superior */
     }
 
+    /* ===== PESTAÑAS DE SELECCIÓN DE COLECCIÓN ===== */
     .tabs-coleccion {
-      margin-bottom: 15px;
+      margin-bottom: 15px; /* Espacio inferior antes del botón de cargar */
     }
 
     .tabs-coleccion button {
-      background-color: #e0e0e0;
-      border: 1px solid #bbb;
-      padding: 7px 14px;
-      cursor: pointer;
-      font-size: 13px;
-      margin-right: 4px;
-      border-radius: 3px;
+      background-color: #e0e0e0; /* Fondo gris claro para pestañas inactivas */
+      border: 1px solid #bbb;    /* Borde gris */
+      padding: 7px 14px;         /* Relleno de la pestaña */
+      cursor: pointer;           /* Cursor de mano */
+      font-size: 13px;           /* Tamaño de texto */
+      margin-right: 4px;         /* Separación entre pestañas */
+      border-radius: 3px;        /* Bordes redondeados */
     }
 
     .tabs-coleccion button.activo {
-      background-color: #4CAF50;
-      color: white;
-      border-color: #4CAF50;
+      background-color: #4CAF50; /* Verde cuando la pestaña está activa */
+      color: white;               /* Texto blanco en la pestaña activa */
+      border-color: #4CAF50;     /* Borde verde igualando el fondo */
     }
 
-    .tabla-contenedor { overflow-x: auto; }
+    .tabla-contenedor { overflow-x: auto; } /* Scroll horizontal si la tabla es muy ancha */
 
-    /* ===== MODAL EDITAR ===== */
+    /* ===== MODAL DE EDICIÓN ===== */
     .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
+      display: none;             /* Oculto por defecto hasta que se abra */
+      position: fixed;           /* Posición fija respecto a la ventana del navegador */
+      top: 0; left: 0;           /* Parte superior izquierda de la ventana */
+      width: 100%; height: 100%; /* Cubre toda la ventana */
+      background: rgba(0,0,0,0.5); /* Fondo negro semi-transparente (overlay oscuro) */
+      z-index: 999;              /* Encima de todo el contenido */
+      justify-content: center;   /* Centra horizontalmente el cuadro del modal */
+      align-items: center;       /* Centra verticalmente el cuadro del modal */
     }
 
     .modal-overlay.visible {
-      display: flex;
+      display: flex; /* Activa Flexbox para mostrar y centrar el modal */
     }
 
     .modal-box {
-      background: white;
-      border-radius: 6px;
-      padding: 24px;
-      width: 480px;
-      max-width: 95vw;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      background: white;        /* Fondo blanco del cuadro del modal */
+      border-radius: 6px;       /* Bordes redondeados del cuadro */
+      padding: 24px;            /* Relleno interior del modal */
+      width: 480px;             /* Ancho fijo del modal */
+      max-width: 95vw;          /* En móviles, no excede el 95% del ancho de pantalla */
+      max-height: 85vh;         /* No excede el 85% de la altura de pantalla */
+      overflow-y: auto;         /* Scroll vertical si el contenido es muy largo */
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3); /* Sombra para efecto de profundidad */
     }
 
     .modal-box h3 {
-      margin-top: 0;
-      color: #2e7d32;
-      border-bottom: 2px solid #4CAF50;
-      padding-bottom: 8px;
+      margin-top: 0;                        /* Sin margen superior en el título del modal */
+      color: #2e7d32;                       /* Verde oscuro para el título */
+      border-bottom: 2px solid #4CAF50;    /* Línea verde decorativa debajo del título */
+      padding-bottom: 8px;                  /* Espacio entre texto y línea */
     }
 
     .modal-form-grupo {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      margin-bottom: 10px;   /* Separación entre filas del formulario del modal */
+      display: flex;          /* Flexbox para alinear label e input en horizontal */
+      align-items: center;    /* Centra verticalmente label e input */
+      gap: 10px;              /* Espacio de 10px entre el label y el input */
     }
 
     .modal-form-grupo label {
-      width: 140px;
-      font-weight: bold;
-      font-size: 13px;
-      flex-shrink: 0;
+      width: 140px;        /* Ancho fijo del label en el modal */
+      font-weight: bold;   /* Label en negrita */
+      font-size: 13px;     /* Tamaño de fuente del label */
+      flex-shrink: 0;      /* Evita que el label se encoja */
     }
 
     .modal-form-grupo input,
     .modal-form-grupo select {
-      flex: 1;
-      padding: 6px;
-      border: 1px solid #aaa;
-      font-size: 13px;
-      border-radius: 3px;
+      flex: 1;              /* El input ocupa todo el espacio restante */
+      padding: 6px;         /* Relleno interior del input */
+      border: 1px solid #aaa; /* Borde gris */
+      font-size: 13px;      /* Tamaño de fuente del input */
+      border-radius: 3px;   /* Bordes redondeados */
     }
 
     .modal-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-      justify-content: flex-end;
+      display: flex;            /* Flexbox para alinear botones en horizontal */
+      gap: 10px;                /* Espacio de 10px entre los botones */
+      margin-top: 16px;         /* Espacio superior antes de los botones */
+      justify-content: flex-end;/* Alinea los botones a la derecha */
     }
 
     .btn-guardar-edit {
-      background-color: #4CAF50;
+      background-color: #4CAF50; /* Verde para el botón de guardar cambios */
       color: white;
       padding: 9px 20px;
       border: none;
@@ -309,10 +326,10 @@
       border-radius: 3px;
     }
 
-    .btn-guardar-edit:hover { background-color: #2e7d32; }
+    .btn-guardar-edit:hover { background-color: #2e7d32; } /* Verde más oscuro al hacer hover */
 
     .btn-cancelar {
-      background-color: #9e9e9e;
+      background-color: #9e9e9e; /* Gris para el botón de cancelar */
       color: white;
       padding: 9px 20px;
       border: none;
@@ -321,135 +338,166 @@
       border-radius: 3px;
     }
 
-    .btn-cancelar:hover { background-color: #616161; }
+    .btn-cancelar:hover { background-color: #616161; } /* Gris más oscuro al hacer hover */
 
     #msg-modal {
-      margin-top: 8px;
-      padding: 8px;
-      font-weight: bold;
-      border-radius: 3px;
+      margin-top: 8px;   /* Espacio superior del mensaje en el modal */
+      padding: 8px;      /* Relleno interior del mensaje */
+      font-weight: bold; /* Texto en negrita */
+      border-radius: 3px;/* Bordes redondeados */
     }
 
-    /* ===== FOOTER ===== */
+    /* ===== PIE DE PÁGINA (FOOTER) ===== */
     footer {
-      background-color: #1b5e20;
-      color: #c8e6c9;
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
+      background-color: #1b5e20; /* Verde muy oscuro para el footer */
+      color: #c8e6c9;            /* Texto verde pastel claro */
+      padding: 18px 24px;        /* Relleno interior del footer */
+      display: flex;              /* Flexbox para organizar las tres secciones del footer */
+      align-items: center;        /* Centra verticalmente los elementos */
+      justify-content: space-between; /* Distribuye espacio entre los tres bloques */
+      flex-wrap: wrap;            /* Permite que los bloques se apilen en pantallas pequeñas */
+      gap: 10px;                  /* Espacio entre bloques si se apilan */
     }
 
     .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex;    /* Flexbox para alinear el SVG y el texto del logo */
+      align-items: center; /* Centra verticalmente */
+      gap: 12px;        /* Espacio entre el SVG y el texto */
     }
 
     .footer-logo span {
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
+      color: white;      /* Texto blanco para el nombre en el footer */
+      font-size: 15px;   /* Tamaño de fuente del nombre */
+      font-weight: bold; /* Negrita para el nombre */
     }
 
     .footer-info {
-      text-align: center;
-      font-size: 12px;
+      text-align: center; /* Centra el bloque de información del autor */
+      font-size: 12px;    /* Texto pequeño */
     }
 
     .footer-info strong {
-      color: white;
-      display: block;
-      font-size: 13px;
-      margin-bottom: 2px;
+      color: white;         /* Nombre del autor en blanco */
+      display: block;       /* Ocupa su propia línea */
+      font-size: 13px;      /* Ligeramente más grande que el texto normal */
+      margin-bottom: 2px;   /* Pequeño espacio inferior */
     }
 
     .footer-submodulo {
-      text-align: right;
-      font-size: 12px;
+      text-align: right; /* Alinea el bloque del submódulo a la derecha */
+      font-size: 12px;   /* Texto pequeño */
     }
 
     .footer-submodulo strong {
-      color: white;
-      display: block;
-      font-size: 13px;
+      color: white;    /* Título "Submódulo:" en blanco */
+      display: block;  /* Ocupa su propia línea */
+      font-size: 13px; /* Ligeramente más grande */
     }
   </style>
 </head>
 <body>
 
-<!-- ===== HEADER CON LOGO ===== -->
+<!-- ===== ENCABEZADO CON LOGO SVG ===== -->
 <header>
-  <!-- Logo SVG de pata de animal -->
+  <!-- Logo SVG personalizado: círculo verde con cruz médica y elipses en esquinas -->
   <svg width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+    <!-- Círculo de fondo verde oscuro que sirve como base del logo -->
     <circle cx="27" cy="27" r="27" fill="#1b5e20"/>
-    <!-- Cruz médica -->
+    <!-- Rectángulo vertical de la cruz médica (blanco) -->
     <rect x="22" y="14" width="10" height="26" rx="3" fill="white"/>
+    <!-- Rectángulo horizontal de la cruz médica (blanco) -->
     <rect x="14" y="22" width="26" height="10" rx="3" fill="white"/>
-    <!-- Pequeñas patas en esquinas -->
+    <!-- Elipses decorativas en las cuatro esquinas simulando huellas de patas -->
     <ellipse cx="14" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
     <ellipse cx="40" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
     <ellipse cx="14" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
     <ellipse cx="40" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
   </svg>
+  <!-- Bloque de texto del encabezado -->
   <div class="header-text">
     <h1>🐾 Sistema de Gestión Veterinaria</h1>
+    <!-- Título principal del sistema con emoji de pata -->
     <p>Administración de clientes, mascotas, citas y expedientes clínicos</p>
+    <!-- Subtítulo descriptivo del sistema -->
   </div>
 </header>
 
-<!-- ===== NAVEGACIÓN ===== -->
+<!-- ===== BARRA DE NAVEGACIÓN ENTRE SECCIONES ===== -->
 <div class="menu">
+  <!-- Cada botón llama a mostrar() con el nombre de la sección a mostrar -->
+  <!-- id="btn-X" permite activar/desactivar la clase 'activo' desde JavaScript -->
   <button onclick="mostrar('clientes')" id="btn-clientes" class="activo">Clientes</button>
+  <!-- Botón de Clientes, activo por defecto al cargar la página -->
   <button onclick="mostrar('mascotas')" id="btn-mascotas">Mascotas</button>
   <button onclick="mostrar('veterinarios')" id="btn-veterinarios">Veterinarios</button>
   <button onclick="mostrar('citas')" id="btn-citas">Citas</button>
   <button onclick="mostrar('tratamientos')" id="btn-tratamientos">Tratamientos</button>
   <button onclick="mostrar('expedientes')" id="btn-expedientes">Expedientes</button>
   <button onclick="mostrar('ver-registros')" id="btn-ver-registros">📋 Ver Registros BD</button>
+  <!-- Botón para ir a la sección de visualización de registros de MongoDB -->
 </div>
 
 <main>
+<!-- Contenido principal de la página -->
 
-<!-- ===== CLIENTES ===== -->
+<!-- ===== SECCIÓN: REGISTRAR CLIENTE ===== -->
 <div class="seccion visible" id="seccion-clientes">
+  <!-- 'visible' hace que esta sección sea la mostrada por defecto al cargar -->
   <h2>Registrar Cliente</h2>
+
+  <!-- Campo: ID del cliente (clave de identificación en MongoDB) -->
   <div class="form-grupo">
     <label>ID Cliente:</label>
     <input type="text" id="c_id" placeholder="Ej: CLI001">
+    <!-- 'c_' prefijo identifica que este campo pertenece a la colección clientes -->
   </div>
+
+  <!-- Campo: Nombre del cliente -->
   <div class="form-grupo">
     <label>Nombre:</label>
     <input type="text" id="c_nombre" placeholder="Nombre">
   </div>
+
+  <!-- Campo: Apellido del cliente -->
   <div class="form-grupo">
     <label>Apellido:</label>
     <input type="text" id="c_apellido" placeholder="Apellido">
   </div>
+
+  <!-- Campo: Motivo de consulta del cliente -->
   <div class="form-grupo">
     <label>Motivo:</label>
     <input type="text" id="c_motivo" placeholder="Motivo de consulta">
   </div>
+
+  <!-- Campo: Correo electrónico del cliente (tipo email valida formato) -->
   <div class="form-grupo">
     <label>Correo:</label>
     <input type="email" id="c_correo" placeholder="correo@ejemplo.com">
   </div>
+
+  <!-- Campo: Teléfono de contacto del cliente -->
   <div class="form-grupo">
     <label>Teléfono:</label>
     <input type="text" id="c_telefono" placeholder="Teléfono">
   </div>
+
+  <!-- Botón que llama a guardar() pasando 'clientes' como colección destino -->
   <button class="btn-enviar" onclick="guardar('clientes')">Guardar Cliente</button>
+
+  <!-- Contenedor donde JavaScript mostrará mensajes de éxito o error -->
   <div class="mensaje" id="msg-clientes"></div>
 </div>
 
-<!-- ===== MASCOTAS ===== -->
+<!-- ===== SECCIÓN: REGISTRAR MASCOTA ===== -->
 <div class="seccion" id="seccion-mascotas">
+  <!-- Sin clase 'visible': oculta por defecto -->
   <h2>Registrar Mascota</h2>
+
   <div class="form-grupo">
     <label>ID Mascota:</label>
     <input type="text" id="m_id" placeholder="Ej: MSC001">
+    <!-- 'm_' prefijo identifica campos de la colección mascotas -->
   </div>
   <div class="form-grupo">
     <label>Nombre:</label>
@@ -467,36 +515,47 @@
     <label>Motivo:</label>
     <input type="text" id="m_motivo" placeholder="Motivo de consulta">
   </div>
+
+  <!-- Campo de tipo date muestra un selector de calendario en el navegador -->
   <div class="form-grupo">
     <label>Fecha Nacimiento:</label>
     <input type="date" id="m_fecha_nac">
   </div>
+
+  <!-- Select para elegir el sexo de la mascota entre opciones predefinidas -->
   <div class="form-grupo">
     <label>Sexo:</label>
     <select id="m_sexo">
-      <option value="">-- Seleccionar --</option>
+      <option value="">-- Seleccionar --</option>  <!-- Opción vacía por defecto -->
       <option value="Macho">Macho</option>
       <option value="Hembra">Hembra</option>
     </select>
   </div>
+
+  <!-- Campo numérico para la edad en años -->
   <div class="form-grupo">
     <label>Edad:</label>
     <input type="number" id="m_edad" placeholder="Años">
   </div>
+
+  <!-- FK: ID del cliente dueño de la mascota, enlaza con la colección clientes -->
   <div class="form-grupo">
     <label>ID Cliente (dueño):</label>
     <input type="text" id="m_id_cliente" placeholder="Ej: CLI001">
   </div>
+
   <button class="btn-enviar" onclick="guardar('mascotas')">Guardar Mascota</button>
   <div class="mensaje" id="msg-mascotas"></div>
 </div>
 
-<!-- ===== VETERINARIOS ===== -->
+<!-- ===== SECCIÓN: REGISTRAR VETERINARIO ===== -->
 <div class="seccion" id="seccion-veterinarios">
   <h2>Registrar Veterinario</h2>
+
   <div class="form-grupo">
     <label>ID Veterinario:</label>
     <input type="text" id="v_id" placeholder="Ej: VET001">
+    <!-- 'v_' prefijo para campos de la colección veterinarios -->
   </div>
   <div class="form-grupo">
     <label>Nombre:</label>
@@ -506,6 +565,8 @@
     <label>Especialidad:</label>
     <input type="text" id="v_especialidad" placeholder="Especialidad">
   </div>
+
+  <!-- Select para elegir el turno de trabajo del veterinario -->
   <div class="form-grupo">
     <label>Turno:</label>
     <select id="v_turno">
@@ -515,25 +576,32 @@
       <option value="Nocturno">Nocturno</option>
     </select>
   </div>
+
   <div class="form-grupo">
     <label>Teléfono:</label>
     <input type="text" id="v_telefono" placeholder="Teléfono">
   </div>
+
   <button class="btn-enviar" onclick="guardar('veterinarios')">Guardar Veterinario</button>
   <div class="mensaje" id="msg-veterinarios"></div>
 </div>
 
-<!-- ===== CITAS ===== -->
+<!-- ===== SECCIÓN: REGISTRAR CITA ===== -->
 <div class="seccion" id="seccion-citas">
   <h2>Registrar Cita</h2>
+
   <div class="form-grupo">
     <label>ID Cita:</label>
     <input type="text" id="ci_id" placeholder="Ej: CIT001">
+    <!-- 'ci_' prefijo para campos de la colección citas -->
   </div>
   <div class="form-grupo">
     <label>Fecha:</label>
     <input type="date" id="ci_fecha">
+    <!-- Selector de fecha para la cita -->
   </div>
+
+  <!-- Select con los tipos de cita disponibles en la veterinaria -->
   <div class="form-grupo">
     <label>Tipo:</label>
     <select id="ci_tipo">
@@ -544,29 +612,38 @@
       <option value="Control">Control</option>
     </select>
   </div>
+
+  <!-- FK: referencia a la mascota que tiene la cita -->
   <div class="form-grupo">
     <label>ID Mascota:</label>
     <input type="text" id="ci_id_mascota" placeholder="Ej: MSC001">
   </div>
+
+  <!-- FK: referencia al veterinario que atenderá la cita -->
   <div class="form-grupo">
     <label>ID Veterinario:</label>
     <input type="text" id="ci_id_vet" placeholder="Ej: VET001">
   </div>
+
   <button class="btn-enviar" onclick="guardar('citas')">Guardar Cita</button>
   <div class="mensaje" id="msg-citas"></div>
 </div>
 
-<!-- ===== TRATAMIENTOS ===== -->
+<!-- ===== SECCIÓN: REGISTRAR TRATAMIENTO ===== -->
 <div class="seccion" id="seccion-tratamientos">
   <h2>Registrar Tratamiento</h2>
+
   <div class="form-grupo">
     <label>ID Tratamiento:</label>
     <input type="text" id="t_id" placeholder="Ej: TRA001">
+    <!-- 't_' prefijo para campos de la colección tratamientos -->
   </div>
   <div class="form-grupo">
     <label>Descripción:</label>
     <input type="text" id="t_descripcion" placeholder="Descripción del tratamiento">
   </div>
+
+  <!-- Select con los posibles estados del tratamiento -->
   <div class="form-grupo">
     <label>Estado:</label>
     <select id="t_estado">
@@ -576,51 +653,68 @@
       <option value="Cancelado">Cancelado</option>
     </select>
   </div>
+
   <div class="form-grupo">
     <label>Servicio:</label>
     <input type="text" id="t_servicio" placeholder="Tipo de servicio">
   </div>
+
+  <!-- Campo numérico con decimales para el precio del tratamiento -->
   <div class="form-grupo">
     <label>Costo / Precio:</label>
     <input type="number" id="t_precio" placeholder="0.00" step="0.01">
+    <!-- step="0.01" permite valores con hasta 2 decimales -->
   </div>
+
   <button class="btn-enviar" onclick="guardar('tratamientos')">Guardar Tratamiento</button>
   <div class="mensaje" id="msg-tratamientos"></div>
 </div>
 
-<!-- ===== EXPEDIENTES ===== -->
+<!-- ===== SECCIÓN: REGISTRAR EXPEDIENTE CLÍNICO ===== -->
 <div class="seccion" id="seccion-expedientes">
   <h2>Registrar Expediente Clínico</h2>
+
   <div class="form-grupo">
     <label>ID Expediente:</label>
     <input type="text" id="e_id" placeholder="Ej: EXP001">
+    <!-- 'e_' prefijo para campos de la colección expedientes -->
   </div>
+
+  <!-- FK: referencia a la mascota del expediente -->
   <div class="form-grupo">
     <label>ID Mascota:</label>
     <input type="text" id="e_id_mascota" placeholder="Ej: MSC001">
   </div>
+
+  <!-- FK: referencia al veterinario que generó el expediente -->
   <div class="form-grupo">
     <label>ID Veterinario:</label>
     <input type="text" id="e_id_vet" placeholder="Ej: VET001">
   </div>
+
+  <!-- Select para marcar si el paciente tiene alerta roja médica -->
   <div class="form-grupo">
     <label>Alerta Roja:</label>
     <select id="e_alerta">
-      <option value="No">No</option>
-      <option value="Sí">Sí</option>
+      <option value="No">No</option>   <!-- Sin alerta crítica -->
+      <option value="Sí">Sí</option>   <!-- Paciente con condición crítica -->
     </select>
   </div>
+
   <button class="btn-enviar" onclick="guardar('expedientes')">Guardar Expediente</button>
   <div class="mensaje" id="msg-expedientes"></div>
 </div>
 
-<!-- ===== VER REGISTROS ===== -->
+<!-- ===== SECCIÓN: VER REGISTROS DE MONGODB ===== -->
 <div class="seccion" id="seccion-ver-registros">
   <h2>📋 Ver Registros de la Base de Datos</h2>
   <p style="color:#555; font-size:13px;">Selecciona una colección para cargar sus registros desde MongoDB:</p>
 
+  <!-- Pestañas para seleccionar cuál colección de MongoDB consultar -->
   <div class="tabs-coleccion">
+    <!-- Cada botón llama a seleccionarColeccion() con el nombre exacto de la colección en MongoDB -->
     <button onclick="seleccionarColeccion('clientes')" id="tab-clientes" class="activo">clientes</button>
+    <!-- Pestaña activa por defecto -->
     <button onclick="seleccionarColeccion('mascotas')" id="tab-mascotas">mascotas</button>
     <button onclick="seleccionarColeccion('mascotas_detalle')" id="tab-mascotas_detalle">mascotas_detalle</button>
     <button onclick="seleccionarColeccion('veterinarios')" id="tab-veterinarios">veterinarios</button>
@@ -633,18 +727,26 @@
     <button onclick="seleccionarColeccion('duenos')" id="tab-duenos">duenos</button>
   </div>
 
+  <!-- Botón principal que ejecuta la carga de datos de la colección seleccionada -->
   <button class="btn-cargar" onclick="cargarRegistros()">🔄 Cargar Registros</button>
+
+  <!-- Elemento donde se muestra el texto "Cargando datos..." mientras espera la respuesta -->
   <div id="cargando"></div>
+
+  <!-- Contenedor con scroll horizontal donde se renderizará la tabla de datos -->
   <div class="tabla-contenedor">
     <div id="tabla-registros"></div>
+    <!-- JavaScript insertará la tabla HTML aquí dinámicamente -->
   </div>
 </div>
 
 </main>
 
-<!-- ===== FOOTER ===== -->
+<!-- ===== PIE DE PÁGINA ===== -->
 <footer>
+  <!-- Bloque izquierdo: logo y nombre de la veterinaria -->
   <div class="footer-logo">
+    <!-- Logo SVG más pequeño (40x40) repetido en el footer -->
     <svg width="40" height="40" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
       <circle cx="27" cy="27" r="27" fill="#2e7d32"/>
       <rect x="22" y="14" width="10" height="26" rx="3" fill="white"/>
@@ -655,157 +757,286 @@
       <ellipse cx="40" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
     </svg>
     <span>🐾 Veterinaria</span>
+    <!-- Nombre del negocio junto al logo -->
   </div>
+
+  <!-- Bloque central: información del autor y escuela -->
   <div class="footer-info">
     <strong>Kevin Enrique Contreras | 4J</strong>
+    <!-- Nombre del desarrollador y grupo escolar -->
     Keveterinaria &nbsp;|&nbsp; CBTIS 128
+    <!-- Nombre del proyecto y plantel educativo -->
   </div>
+
+  <!-- Bloque derecho: nombre del submódulo académico -->
   <div class="footer-submodulo">
     <strong>Submódulo:</strong>
     Implementa Bases de Datos No Relacionales en un Sistema
   </div>
 </footer>
 
-<!-- ===== MODAL EDITAR ===== -->
+<!-- ===== MODAL DE EDICIÓN DE REGISTRO ===== -->
 <div class="modal-overlay" id="modal-overlay">
+  <!-- Overlay oscuro; al hacer clic fuera del cuadro, cierra el modal -->
   <div class="modal-box">
     <h3>✏️ Editar Registro</h3>
+    <!-- Título del modal con emoji de lápiz -->
+
+    <!-- Aquí JavaScript insertará dinámicamente los campos del registro a editar -->
     <div id="modal-campos"></div>
+
+    <!-- Mensaje de éxito o error dentro del modal, oculto por defecto -->
     <div id="msg-modal" class="mensaje" style="display:none;"></div>
+
+    <!-- Botones de acción del modal -->
     <div class="modal-buttons">
       <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      <!-- Cierra el modal sin guardar cambios -->
       <button class="btn-guardar-edit" onclick="guardarEdicion()">Guardar Cambios</button>
+      <!-- Envía los datos editados al servidor via AJAX -->
     </div>
   </div>
 </div>
 
 <script>
-  var coleccionActual = 'clientes';
-  var mongoIdActual   = '';   // _id del documento que se está editando
+  // ================================================================
+  //  VARIABLES GLOBALES
+  // ================================================================
+  var coleccionActual = 'clientes'; 
+  // Almacena el nombre de la colección MongoDB actualmente seleccionada en la vista de registros
 
-  // ----------------------------------------------------------------
-  //  NAVEGACIÓN DE SECCIONES
-  // ----------------------------------------------------------------
+  var mongoIdActual = '';
+  // Almacena el _id de MongoDB del documento que está siendo editado en el modal
+
+  // ================================================================
+  //  NAVEGACIÓN ENTRE SECCIONES
+  // ================================================================
   function mostrar(seccion) {
+    // Función que muestra la sección solicitada y oculta las demás
+
     var secciones = document.querySelectorAll('.seccion');
+    // Selecciona todos los elementos con clase 'seccion' (cada formulario)
+
     for (var i = 0; i < secciones.length; i++) {
       secciones[i].classList.remove('visible');
+      // Quita la clase 'visible' de cada sección para ocultarlas todas
     }
+
     document.getElementById('seccion-' + seccion).classList.add('visible');
+    // Agrega la clase 'visible' SOLO a la sección cuyo id coincide con el parámetro
 
     var btns = document.querySelectorAll('.menu button');
+    // Selecciona todos los botones del menú de navegación
+
     for (var j = 0; j < btns.length; j++) {
       btns[j].classList.remove('activo');
+      // Quita la clase 'activo' de todos los botones del menú
     }
+
     document.getElementById('btn-' + seccion).classList.add('activo');
+    // Marca como 'activo' el botón correspondiente a la sección mostrada
   }
 
-  // ----------------------------------------------------------------
-  //  SELECCIONAR COLECCIÓN EN TABLA
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  SELECCIONAR COLECCIÓN EN LA SECCIÓN "VER REGISTROS"
+  // ================================================================
   function seleccionarColeccion(nombre) {
+    // Actualiza la colección activa y limpia la tabla y el estado de carga
+
     coleccionActual = nombre;
+    // Guarda el nombre de la colección seleccionada en la variable global
+
     var tabs = document.querySelectorAll('.tabs-coleccion button');
+    // Obtiene todos los botones de pestañas de colección
+
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].classList.remove('activo');
+      // Desactiva visualmente todas las pestañas
     }
+
     document.getElementById('tab-' + nombre).classList.add('activo');
+    // Marca como activa la pestaña de la colección seleccionada
+
     document.getElementById('tabla-registros').innerHTML = '';
+    // Limpia el contenido anterior de la tabla
+
     document.getElementById('cargando').innerText = '';
+    // Limpia el mensaje de "cargando"
   }
 
-  // ----------------------------------------------------------------
-  //  LEER (READ) — cargar registros
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  LEER REGISTROS (READ) — petición AJAX GET al backend
+  // ================================================================
   function cargarRegistros() {
+    // Realiza una petición GET al backend PHP para obtener documentos de MongoDB
+
     document.getElementById('cargando').innerText = 'Cargando datos...';
+    // Muestra mensaje de espera mientras se realiza la petición
+
     document.getElementById('tabla-registros').innerHTML = '';
+    // Limpia cualquier tabla previa antes de cargar nuevos datos
 
     var xhr = new XMLHttpRequest();
+    // Crea un objeto XMLHttpRequest para hacer la petición HTTP sin recargar la página
+
     xhr.open('GET', 'api/index.php?accion=listar&coleccion=' + coleccionActual, true);
+    // Configura la petición GET indicando la acción 'listar' y la colección actual
+    // El tercer parámetro 'true' indica que la petición es asíncrona
+
     xhr.onreadystatechange = function() {
+      // Función que se ejecuta cada vez que cambia el estado de la petición
+
       if (xhr.readyState === 4) {
+        // readyState 4 significa que la petición se completó (exitosa o no)
+
         document.getElementById('cargando').innerText = '';
+        // Oculta el mensaje de "cargando" una vez completada la petición
+
         if (xhr.status === 200) {
+          // status 200 = respuesta HTTP exitosa (OK)
+
           try {
             var datos = JSON.parse(xhr.responseText);
+            // Intenta convertir la respuesta JSON en un objeto JavaScript
+
             if (datos.error) {
+              // Si el objeto tiene propiedad 'error', el backend reportó un problema
               document.getElementById('tabla-registros').innerHTML =
                 '<p style="color:red;">Error: ' + datos.error + '</p>';
-              return;
+              return; // Sale de la función sin renderizar tabla
             }
+
             if (datos.length === 0) {
+              // Si el arreglo de datos está vacío, no hay registros en la colección
               document.getElementById('tabla-registros').innerHTML =
                 '<p>No hay registros en esta colección.</p>';
               return;
             }
+
             renderTabla(datos);
+            // Si hay datos válidos, llama a la función que construye la tabla HTML
+
           } catch (e) {
+            // Si JSON.parse falla, muestra el texto crudo de la respuesta para depurar
             document.getElementById('tabla-registros').innerHTML =
               '<p style="color:red;">Error al parsear respuesta.</p><pre>' + xhr.responseText + '</pre>';
           }
+
         } else {
+          // Si el status HTTP no es 200, muestra el código de error
           document.getElementById('tabla-registros').innerHTML =
             '<p style="color:red;">Error HTTP ' + xhr.status + '</p>';
         }
       }
     };
+
     xhr.send();
+    // Envía la petición GET (sin cuerpo, ya que es GET)
   }
 
-  // Construye la tabla con columnas + botones Editar / Eliminar
+  // ================================================================
+  //  CONSTRUIR TABLA HTML CON LOS DATOS RECIBIDOS
+  // ================================================================
   function renderTabla(datos) {
+    // Construye dinámicamente una tabla HTML con los documentos de MongoDB
+
     var columnas = Object.keys(datos[0]);
+    // Extrae los nombres de los campos del primer documento (son iguales en todos)
+
     var html = '<table><thead><tr>';
+    // Inicia el HTML de la tabla con la fila de encabezados
+
     for (var c = 0; c < columnas.length; c++) {
       if (columnas[c] !== '_id') {
+        // Omite la columna '_id' de MongoDB para no mostrarla al usuario
         html += '<th>' + columnas[c] + '</th>';
+        // Agrega una celda de encabezado por cada campo visible
       }
     }
+
     html += '<th>Acciones</th></tr></thead><tbody>';
+    // Agrega la columna de acciones (Editar/Eliminar) al final del encabezado
 
     for (var r = 0; r < datos.length; r++) {
+      // Itera sobre cada documento (fila) recibido del backend
+
       var mongoId = datos[r]['_id'] || '';
+      // Extrae el _id de MongoDB de cada documento (usado para editar/eliminar)
+
       html += '<tr>';
+      // Inicia una fila de la tabla
+
       for (var cc = 0; cc < columnas.length; cc++) {
         if (columnas[cc] !== '_id') {
+          // Omite el campo _id en las celdas de datos
+
           var val = datos[r][columnas[cc]];
+          // Obtiene el valor del campo actual
+
           if (val === null || val === undefined) val = '-';
+          // Si el valor es nulo o indefinido, muestra un guión
+
           html += '<td>' + val + '</td>';
+          // Agrega la celda con el valor del campo
         }
       }
-      // Serializar todo el objeto para pasar al modal
+
       var jsonEsc = encodeURIComponent(JSON.stringify(datos[r]));
+      // Serializa todo el documento a JSON y lo codifica para usarlo en el onclick
+      // encodeURIComponent evita que caracteres especiales rompan el atributo HTML
+
       html += '<td>'
-            + '<button class="btn-editar"  onclick="abrirModal(\'' + mongoId + '\', decodeURIComponent(\'' + jsonEsc + '\'))">✏️ Editar</button>'
+            + '<button class="btn-editar" onclick="abrirModal(\'' + mongoId + '\', decodeURIComponent(\'' + jsonEsc + '\'))">✏️ Editar</button>'
+            // Botón editar: pasa el _id y los datos del documento al modal
             + '<button class="btn-eliminar" onclick="eliminar(\'' + mongoId + '\')">🗑️ Eliminar</button>'
+            // Botón eliminar: pasa solo el _id para la eliminación
             + '</td>';
+
       html += '</tr>';
+      // Cierra la fila del documento
     }
+
     html += '</tbody></table>';
+    // Cierra el cuerpo y la tabla HTML
+
     document.getElementById('tabla-registros').innerHTML = html;
+    // Inserta la tabla construida en el contenedor del DOM
   }
 
-  // ----------------------------------------------------------------
-  //  CREAR (CREATE) — guardar nuevo registro
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  CREAR REGISTRO (CREATE) — petición AJAX POST al backend
+  // ================================================================
   function guardar(coleccion) {
+    // Recoge los valores del formulario correspondiente y los envía al backend
+
     var datos = {};
+    // Objeto vacío donde se almacenarán los campos del formulario
+
     var msgEl = document.getElementById('msg-' + coleccion);
+    // Referencia al elemento de mensaje de éxito/error de esta sección
 
     if (coleccion === 'clientes') {
+      // Construye el objeto con los campos del formulario de clientes
+
       datos = {
-        ID_Cliente:  document.getElementById('c_id').value.trim(),
-        Nombre:      document.getElementById('c_nombre').value.trim(),
-        Apellido:    document.getElementById('c_apellido').value.trim(),
-        Motivo:      document.getElementById('c_motivo').value.trim(),
-        Correo:      document.getElementById('c_correo').value.trim(),
-        Telefono:    document.getElementById('c_telefono').value.trim()
+        ID_Cliente: document.getElementById('c_id').value.trim(),
+        // .trim() elimina espacios al inicio y final del texto
+        Nombre:     document.getElementById('c_nombre').value.trim(),
+        Apellido:   document.getElementById('c_apellido').value.trim(),
+        Motivo:     document.getElementById('c_motivo').value.trim(),
+        Correo:     document.getElementById('c_correo').value.trim(),
+        Telefono:   document.getElementById('c_telefono').value.trim()
       };
+
       if (!datos.ID_Cliente || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID Cliente y Nombre son obligatorios.', 'error'); return;
+        // Validación: los campos obligatorios no pueden estar vacíos
+        mostrarMsg(msgEl, 'ID Cliente y Nombre son obligatorios.', 'error');
+        return; // Detiene la ejecución si falta un campo obligatorio
       }
+
     } else if (coleccion === 'mascotas') {
+      // Campos del formulario de mascotas
+
       datos = {
         ID_Mascota:       document.getElementById('m_id').value.trim(),
         Nombre:           document.getElementById('m_nombre').value.trim(),
@@ -813,14 +1044,20 @@
         Raza:             document.getElementById('m_raza').value.trim(),
         Motivo:           document.getElementById('m_motivo').value.trim(),
         Fecha_Nacimiento: document.getElementById('m_fecha_nac').value,
+        // Las fechas no necesitan .trim() porque son valores controlados
         Sexo:             document.getElementById('m_sexo').value,
         Edad:             document.getElementById('m_edad').value,
         ID_Cliente:       document.getElementById('m_id_cliente').value.trim()
       };
+
       if (!datos.ID_Mascota || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID Mascota y Nombre son obligatorios.', 'error'); return;
+        mostrarMsg(msgEl, 'ID Mascota y Nombre son obligatorios.', 'error');
+        return;
       }
+
     } else if (coleccion === 'veterinarios') {
+      // Campos del formulario de veterinarios
+
       datos = {
         ID_Veterinario: document.getElementById('v_id').value.trim(),
         Nombre:         document.getElementById('v_nombre').value.trim(),
@@ -828,10 +1065,15 @@
         Turno:          document.getElementById('v_turno').value,
         Telefono:       document.getElementById('v_telefono').value.trim()
       };
+
       if (!datos.ID_Veterinario || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID y Nombre son obligatorios.', 'error'); return;
+        mostrarMsg(msgEl, 'ID y Nombre son obligatorios.', 'error');
+        return;
       }
+
     } else if (coleccion === 'citas') {
+      // Campos del formulario de citas
+
       datos = {
         ID_Cita:        document.getElementById('ci_id').value.trim(),
         Fecha:          document.getElementById('ci_fecha').value,
@@ -839,165 +1081,284 @@
         ID_Mascota:     document.getElementById('ci_id_mascota').value.trim(),
         ID_Veterinario: document.getElementById('ci_id_vet').value.trim()
       };
+
       if (!datos.ID_Cita) {
-        mostrarMsg(msgEl, 'ID Cita es obligatorio.', 'error'); return;
+        mostrarMsg(msgEl, 'ID Cita es obligatorio.', 'error');
+        return;
       }
+
     } else if (coleccion === 'tratamientos') {
+      // Campos del formulario de tratamientos
+
       datos = {
         ID_Tratamiento: document.getElementById('t_id').value.trim(),
         Descripcion:    document.getElementById('t_descripcion').value.trim(),
         Estado:         document.getElementById('t_estado').value,
         Servicio:       document.getElementById('t_servicio').value.trim(),
         Precio:         document.getElementById('t_precio').value
+        // El precio se enviará como texto; el backend lo convierte a número
       };
+
       if (!datos.ID_Tratamiento) {
-        mostrarMsg(msgEl, 'ID Tratamiento es obligatorio.', 'error'); return;
+        mostrarMsg(msgEl, 'ID Tratamiento es obligatorio.', 'error');
+        return;
       }
+
     } else if (coleccion === 'expedientes') {
+      // Campos del formulario de expedientes clínicos
+
       datos = {
         ID_Expediente:  document.getElementById('e_id').value.trim(),
         ID_Mascota:     document.getElementById('e_id_mascota').value.trim(),
         ID_Veterinario: document.getElementById('e_id_vet').value.trim(),
         Alerta_Roja:    document.getElementById('e_alerta').value
       };
+
       if (!datos.ID_Expediente) {
-        mostrarMsg(msgEl, 'ID Expediente es obligatorio.', 'error'); return;
+        mostrarMsg(msgEl, 'ID Expediente es obligatorio.', 'error');
+        return;
       }
     }
 
     msgEl.className = 'mensaje';
+    // Resetea las clases del mensaje (quita 'ok' o 'error' previos)
+
     msgEl.innerText = 'Guardando...';
+    // Muestra texto provisional mientras se procesa la petición
 
     var xhr = new XMLHttpRequest();
+    // Nuevo objeto XMLHttpRequest para la petición POST
+
     xhr.open('POST', 'api/index.php?accion=insertar&coleccion=' + coleccion, true);
+    // Configura la petición POST hacia el backend con la acción 'insertar'
+
     xhr.setRequestHeader('Content-Type', 'application/json');
+    // Indica al servidor que el cuerpo de la petición está en formato JSON
+
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
+        // Petición completada
+
         try {
           var resp = JSON.parse(xhr.responseText);
+          // Convierte la respuesta JSON a objeto JavaScript
+
           if (resp.exito) {
+            // Si el backend confirmó el éxito de la inserción
             mostrarMsg(msgEl, '✔ Registro guardado correctamente en MongoDB.', 'ok');
           } else {
+            // Si el backend devolvió un error de lógica
             mostrarMsg(msgEl, '✘ Error: ' + (resp.error || 'Error desconocido'), 'error');
           }
         } catch(e) {
+          // Si la respuesta no es JSON válido
           mostrarMsg(msgEl, '✘ Respuesta inválida del servidor.', 'error');
         }
       }
     };
+
     xhr.send(JSON.stringify(datos));
+    // Envía el objeto de datos serializado como JSON en el cuerpo del POST
   }
 
-  // ----------------------------------------------------------------
-  //  ACTUALIZAR (UPDATE) — modal de edición
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  ACTUALIZAR REGISTRO (UPDATE) — abrir modal con datos actuales
+  // ================================================================
   function abrirModal(mongoId, jsonStr) {
+    // Prepara y muestra el modal con los campos del documento a editar
+
     mongoIdActual = mongoId;
+    // Guarda el _id del documento que se va a editar en la variable global
+
     var doc = JSON.parse(jsonStr);
+    // Convierte el string JSON de los datos del documento a un objeto JavaScript
+
     var html = '';
+    // Cadena donde se construirá el HTML de los campos del modal
+
     for (var campo in doc) {
+      // Itera sobre cada propiedad del documento
+
       if (campo === '_id') continue;
+      // Salta el campo _id porque no es editable por el usuario
+
       html += '<div class="modal-form-grupo">'
             + '<label>' + campo + ':</label>'
+            // Muestra el nombre del campo como etiqueta
             + '<input type="text" id="edit_' + campo + '" value="' + (doc[campo] !== null ? doc[campo] : '') + '">'
+            // Crea un input con el valor actual del campo para que el usuario lo modifique
+            // id="edit_CAMPO" permite que guardarEdicion() recupere los valores por ID
             + '</div>';
     }
+
     document.getElementById('modal-campos').innerHTML = html;
+    // Inserta los campos generados dentro del modal
+
     var msgM = document.getElementById('msg-modal');
     msgM.style.display = 'none';
+    // Oculta el mensaje de estado del modal (puede haber quedado de una edición anterior)
+
     msgM.innerText = '';
+    // Limpia el texto del mensaje
+
     document.getElementById('modal-overlay').classList.add('visible');
+    // Muestra el modal añadiendo la clase 'visible' al overlay
   }
 
   function cerrarModal() {
+    // Oculta el modal y limpia las variables de edición
+
     document.getElementById('modal-overlay').classList.remove('visible');
+    // Quita la clase 'visible' para ocultar el modal
+
     mongoIdActual = '';
+    // Limpia el ID del documento que se estaba editando
   }
 
   function guardarEdicion() {
-    // Recolectar todos los inputs del modal
+    // Recoge los valores modificados en el modal y los envía al backend para actualizar
+
     var inputs = document.querySelectorAll('#modal-campos input');
+    // Selecciona todos los inputs dentro del contenedor de campos del modal
+
     var datosActualizados = {};
+    // Objeto donde se guardarán los campos y sus nuevos valores
+
     for (var i = 0; i < inputs.length; i++) {
       var nombreCampo = inputs[i].id.replace('edit_', '');
+      // Extrae el nombre del campo quitando el prefijo 'edit_' del id del input
+
       datosActualizados[nombreCampo] = inputs[i].value.trim();
+      // Guarda el nuevo valor (sin espacios extras) en el objeto de datos
     }
 
     var msgM = document.getElementById('msg-modal');
     msgM.style.display = 'block';
+    // Hace visible el mensaje de estado dentro del modal
+
     msgM.className = 'mensaje';
+    // Resetea las clases del mensaje
+
     msgM.innerText = 'Guardando cambios...';
+    // Muestra texto de espera durante la petición
 
     var xhr = new XMLHttpRequest();
+    // Crea nueva petición HTTP para el UPDATE
+
     xhr.open('POST', 'api/index.php?accion=actualizar&coleccion=' + coleccionActual + '&id=' + mongoIdActual, true);
+    // POST a la API con la acción 'actualizar', la colección actual y el _id del documento
+
     xhr.setRequestHeader('Content-Type', 'application/json');
+    // Indica que el cuerpo es JSON
+
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
+        // Petición completada
+
         try {
           var resp = JSON.parse(xhr.responseText);
+
           if (resp.exito) {
             msgM.className = 'mensaje ok';
             msgM.innerText = '✔ Registro actualizado correctamente.';
+            // Muestra confirmación de éxito en el modal
+
             setTimeout(function() {
               cerrarModal();
+              // Cierra el modal después de 1 segundo
               cargarRegistros();
+              // Recarga la tabla para reflejar los cambios actualizados
             }, 1000);
+            // setTimeout retrasa 1 segundo para que el usuario vea el mensaje de éxito
+
           } else {
             msgM.className = 'mensaje error';
             msgM.innerText = '✘ Error: ' + (resp.error || 'Error desconocido');
+            // Muestra el error devuelto por el backend
           }
+
         } catch(e) {
           msgM.className = 'mensaje error';
           msgM.innerText = '✘ Respuesta inválida del servidor.';
+          // Error al parsear la respuesta
         }
       }
     };
+
     xhr.send(JSON.stringify(datosActualizados));
+    // Envía los datos actualizados como JSON en el cuerpo del POST
   }
 
-  // ----------------------------------------------------------------
-  //  ELIMINAR (DELETE)
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  ELIMINAR REGISTRO (DELETE) — petición AJAX POST al backend
+  // ================================================================
   function eliminar(mongoId) {
+    // Solicita confirmación y luego envía la petición de eliminación al backend
+
     if (!confirm('¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.')) {
       return;
+      // Si el usuario cancela el diálogo de confirmación, no hace nada
     }
 
     var xhr = new XMLHttpRequest();
+    // Crea una nueva petición HTTP para el DELETE
+
     xhr.open('POST', 'api/index.php?accion=eliminar&coleccion=' + coleccionActual + '&id=' + mongoId, true);
+    // POST con la acción 'eliminar', la colección actual y el _id del documento a borrar
+
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
+        // Petición completada
+
         try {
           var resp = JSON.parse(xhr.responseText);
+
           if (resp.exito) {
-            cargarRegistros(); // refrescar tabla
+            cargarRegistros();
+            // Si la eliminación fue exitosa, recarga la tabla para reflejar el cambio
           } else {
             alert('Error al eliminar: ' + (resp.error || 'Error desconocido'));
+            // Si el backend devuelve error, lo muestra en un alert del navegador
           }
+
         } catch(e) {
           alert('Respuesta inválida del servidor.');
+          // Si la respuesta no es JSON válido
         }
       }
     };
+
     xhr.send();
+    // Envía la petición POST sin cuerpo (el _id va en la URL como parámetro GET)
   }
 
-  // ----------------------------------------------------------------
-  //  UTILIDADES
-  // ----------------------------------------------------------------
+  // ================================================================
+  //  FUNCIÓN UTILITARIA: mostrar mensaje de estado en los formularios
+  // ================================================================
   function mostrarMsg(el, texto, tipo) {
+    // Actualiza el texto y la clase de estilo del elemento de mensaje
+
     el.innerText = texto;
+    // Establece el texto del mensaje (éxito o error)
+
     el.className = 'mensaje ' + tipo;
+    // Aplica la clase 'mensaje ok' o 'mensaje error' para el estilo visual
   }
 
-  // Cargar registros al entrar a la sección
+  // ================================================================
+  //  EVENT LISTENERS
+  // ================================================================
   document.getElementById('btn-ver-registros').addEventListener('click', function() {
     cargarRegistros();
+    // Cuando se hace clic en "Ver Registros BD", carga automáticamente los datos
   });
 
-  // Cerrar modal al hacer click fuera
   document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    // Detecta clics en el overlay oscuro del modal
+
     if (e.target === this) cerrarModal();
+    // Si el clic fue directamente en el overlay (no dentro del modal-box), cierra el modal
+    // e.target === this verifica que el clic no fue en un hijo del overlay
   });
 </script>
 
