@@ -8,16 +8,42 @@
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
       margin: 0;
-      padding: 10px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      background-color: #4CAF50;
-      padding: 15px;
+    /* ===== HEADER CON LOGO ===== */
+    header {
+      background-color: #2e7d32;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    header svg {
+      flex-shrink: 0;
+    }
+
+    header .header-text h1 {
+      margin: 0;
       color: white;
-      margin-bottom: 20px;
+      font-size: 22px;
+      font-family: Arial, sans-serif;
+    }
+
+    header .header-text p {
+      margin: 2px 0 0;
+      color: #c8e6c9;
+      font-size: 12px;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    main {
+      flex: 1;
+      padding: 10px;
     }
 
     h2 {
@@ -29,25 +55,28 @@
     .menu {
       text-align: center;
       margin-bottom: 20px;
+      background-color: #388e3c;
+      padding: 8px 0;
     }
 
     .menu button {
-      background-color: #4CAF50;
+      background-color: transparent;
       color: white;
-      border: none;
-      padding: 10px 16px;
-      margin: 4px;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 14px;
+      margin: 3px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
+      border-radius: 3px;
     }
 
     .menu button:hover {
-      background-color: #45a049;
+      background-color: rgba(255,255,255,0.15);
     }
 
     .menu button.activo {
-      background-color: #2e7d32;
-      text-decoration: underline;
+      background-color: #1b5e20;
+      border-color: white;
     }
 
     .seccion {
@@ -56,6 +85,7 @@
       padding: 20px;
       margin-bottom: 20px;
       border: 1px solid #ccc;
+      border-radius: 4px;
     }
 
     .seccion.visible {
@@ -79,26 +109,27 @@
       width: 260px;
       border: 1px solid #aaa;
       font-size: 14px;
+      border-radius: 3px;
     }
 
     .btn-enviar {
       background-color: #2196F3;
       color: white;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border: none;
       cursor: pointer;
       font-size: 14px;
       margin-top: 10px;
+      border-radius: 3px;
     }
 
-    .btn-enviar:hover {
-      background-color: #1976D2;
-    }
+    .btn-enviar:hover { background-color: #1976D2; }
 
     .mensaje {
       margin-top: 10px;
       padding: 10px;
       font-weight: bold;
+      border-radius: 3px;
     }
 
     .mensaje.ok {
@@ -113,6 +144,7 @@
       border: 1px solid #e53935;
     }
 
+    /* ===== TABLA ===== */
     table {
       border-collapse: collapse;
       width: 100%;
@@ -133,9 +165,34 @@
       border: 1px solid #ccc;
     }
 
-    table tr:nth-child(even) {
-      background-color: #f9f9f9;
+    table tr:nth-child(even) { background-color: #f9f9f9; }
+    table tr:hover { background-color: #e8f5e9; }
+
+    /* ===== BOTONES DE ACCIÓN EN TABLA ===== */
+    .btn-editar {
+      background-color: #FF9800;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      border-radius: 3px;
+      margin-right: 4px;
     }
+
+    .btn-editar:hover { background-color: #F57C00; }
+
+    .btn-eliminar {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    .btn-eliminar:hover { background-color: #c62828; }
 
     .btn-cargar {
       background-color: #FF9800;
@@ -145,11 +202,10 @@
       cursor: pointer;
       font-size: 13px;
       margin-top: 10px;
+      border-radius: 3px;
     }
 
-    .btn-cargar:hover {
-      background-color: #F57C00;
-    }
+    .btn-cargar:hover { background-color: #F57C00; }
 
     #cargando {
       color: #888;
@@ -168,6 +224,7 @@
       cursor: pointer;
       font-size: 13px;
       margin-right: 4px;
+      border-radius: 3px;
     }
 
     .tabs-coleccion button.activo {
@@ -176,15 +233,174 @@
       border-color: #4CAF50;
     }
 
-    .tabla-contenedor {
-      overflow-x: auto;
+    .tabla-contenedor { overflow-x: auto; }
+
+    /* ===== MODAL EDITAR ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 6px;
+      padding: 24px;
+      width: 480px;
+      max-width: 95vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .modal-box h3 {
+      margin-top: 0;
+      color: #2e7d32;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 8px;
+    }
+
+    .modal-form-grupo {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-form-grupo label {
+      width: 140px;
+      font-weight: bold;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .modal-form-grupo input,
+    .modal-form-grupo select {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #aaa;
+      font-size: 13px;
+      border-radius: 3px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      justify-content: flex-end;
+    }
+
+    .btn-guardar-edit {
+      background-color: #4CAF50;
+      color: white;
+      padding: 9px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    .btn-guardar-edit:hover { background-color: #2e7d32; }
+
+    .btn-cancelar {
+      background-color: #9e9e9e;
+      color: white;
+      padding: 9px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    .btn-cancelar:hover { background-color: #616161; }
+
+    #msg-modal {
+      margin-top: 8px;
+      padding: 8px;
+      font-weight: bold;
+      border-radius: 3px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background-color: #1b5e20;
+      color: #c8e6c9;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo span {
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .footer-info {
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .footer-info strong {
+      color: white;
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .footer-submodulo {
+      text-align: right;
+      font-size: 12px;
+    }
+
+    .footer-submodulo strong {
+      color: white;
+      display: block;
+      font-size: 13px;
     }
   </style>
 </head>
 <body>
 
-<h1>🐾 Sistema de Gestión Veterinaria</h1>
+<!-- ===== HEADER CON LOGO ===== -->
+<header>
+  <!-- Logo SVG de pata de animal -->
+  <svg width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="27" cy="27" r="27" fill="#1b5e20"/>
+    <!-- Cruz médica -->
+    <rect x="22" y="14" width="10" height="26" rx="3" fill="white"/>
+    <rect x="14" y="22" width="26" height="10" rx="3" fill="white"/>
+    <!-- Pequeñas patas en esquinas -->
+    <ellipse cx="14" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
+    <ellipse cx="40" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
+    <ellipse cx="14" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
+    <ellipse cx="40" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
+  </svg>
+  <div class="header-text">
+    <h1>🐾 Sistema de Gestión Veterinaria</h1>
+    <p>Administración de clientes, mascotas, citas y expedientes clínicos</p>
+  </div>
+</header>
 
+<!-- ===== NAVEGACIÓN ===== -->
 <div class="menu">
   <button onclick="mostrar('clientes')" id="btn-clientes" class="activo">Clientes</button>
   <button onclick="mostrar('mascotas')" id="btn-mascotas">Mascotas</button>
@@ -194,6 +410,8 @@
   <button onclick="mostrar('expedientes')" id="btn-expedientes">Expedientes</button>
   <button onclick="mostrar('ver-registros')" id="btn-ver-registros">📋 Ver Registros BD</button>
 </div>
+
+<main>
 
 <!-- ===== CLIENTES ===== -->
 <div class="seccion visible" id="seccion-clientes">
@@ -415,26 +633,66 @@
     <button onclick="seleccionarColeccion('duenos')" id="tab-duenos">duenos</button>
   </div>
 
-  <button class="btn-cargar" onclick="cargarRegistros()">Cargar Registros</button>
+  <button class="btn-cargar" onclick="cargarRegistros()">🔄 Cargar Registros</button>
   <div id="cargando"></div>
   <div class="tabla-contenedor">
     <div id="tabla-registros"></div>
   </div>
 </div>
 
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">
+    <svg width="40" height="40" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="27" cy="27" r="27" fill="#2e7d32"/>
+      <rect x="22" y="14" width="10" height="26" rx="3" fill="white"/>
+      <rect x="14" y="22" width="26" height="10" rx="3" fill="white"/>
+      <ellipse cx="14" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
+      <ellipse cx="40" cy="14" rx="4" ry="4" fill="#a5d6a7"/>
+      <ellipse cx="14" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
+      <ellipse cx="40" cy="40" rx="4" ry="4" fill="#a5d6a7"/>
+    </svg>
+    <span>🐾 Veterinaria</span>
+  </div>
+  <div class="footer-info">
+    <strong>Nombre del Alumno</strong>
+    Nombre del Negocio &nbsp;|&nbsp; CBTIS 128
+  </div>
+  <div class="footer-submodulo">
+    <strong>Submódulo:</strong>
+    Bases de Datos No Relacionales
+  </div>
+</footer>
+
+<!-- ===== MODAL EDITAR ===== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <h3>✏️ Editar Registro</h3>
+    <div id="modal-campos"></div>
+    <div id="msg-modal" class="mensaje" style="display:none;"></div>
+    <div class="modal-buttons">
+      <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-guardar-edit" onclick="guardarEdicion()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
+
 <script>
   var coleccionActual = 'clientes';
+  var mongoIdActual   = '';   // _id del documento que se está editando
 
+  // ----------------------------------------------------------------
+  //  NAVEGACIÓN DE SECCIONES
+  // ----------------------------------------------------------------
   function mostrar(seccion) {
-    // Ocultar todas las secciones
     var secciones = document.querySelectorAll('.seccion');
     for (var i = 0; i < secciones.length; i++) {
       secciones[i].classList.remove('visible');
     }
-    // Mostrar la sección seleccionada
     document.getElementById('seccion-' + seccion).classList.add('visible');
 
-    // Quitar activo de todos los botones del menú
     var btns = document.querySelectorAll('.menu button');
     for (var j = 0; j < btns.length; j++) {
       btns[j].classList.remove('activo');
@@ -442,9 +700,11 @@
     document.getElementById('btn-' + seccion).classList.add('activo');
   }
 
+  // ----------------------------------------------------------------
+  //  SELECCIONAR COLECCIÓN EN TABLA
+  // ----------------------------------------------------------------
   function seleccionarColeccion(nombre) {
     coleccionActual = nombre;
-    // Quitar activo de tabs
     var tabs = document.querySelectorAll('.tabs-coleccion button');
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].classList.remove('activo');
@@ -454,6 +714,9 @@
     document.getElementById('cargando').innerText = '';
   }
 
+  // ----------------------------------------------------------------
+  //  LEER (READ) — cargar registros
+  // ----------------------------------------------------------------
   function cargarRegistros() {
     document.getElementById('cargando').innerText = 'Cargando datos...';
     document.getElementById('tabla-registros').innerHTML = '';
@@ -467,46 +730,65 @@
           try {
             var datos = JSON.parse(xhr.responseText);
             if (datos.error) {
-              document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error: ' + datos.error + '</p>';
+              document.getElementById('tabla-registros').innerHTML =
+                '<p style="color:red;">Error: ' + datos.error + '</p>';
               return;
             }
             if (datos.length === 0) {
-              document.getElementById('tabla-registros').innerHTML = '<p>No hay registros en esta colección.</p>';
+              document.getElementById('tabla-registros').innerHTML =
+                '<p>No hay registros en esta colección.</p>';
               return;
             }
-            // Construir tabla
-            var columnas = Object.keys(datos[0]);
-            var html = '<table><thead><tr>';
-            for (var c = 0; c < columnas.length; c++) {
-              if (columnas[c] !== '_id') {
-                html += '<th>' + columnas[c] + '</th>';
-              }
-            }
-            html += '</tr></thead><tbody>';
-            for (var r = 0; r < datos.length; r++) {
-              html += '<tr>';
-              for (var cc = 0; cc < columnas.length; cc++) {
-                if (columnas[cc] !== '_id') {
-                  var val = datos[r][columnas[cc]];
-                  if (val === null || val === undefined) val = '-';
-                  html += '<td>' + val + '</td>';
-                }
-              }
-              html += '</tr>';
-            }
-            html += '</tbody></table>';
-            document.getElementById('tabla-registros').innerHTML = html;
+            renderTabla(datos);
           } catch (e) {
-            document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error al parsear respuesta.</p><pre>' + xhr.responseText + '</pre>';
+            document.getElementById('tabla-registros').innerHTML =
+              '<p style="color:red;">Error al parsear respuesta.</p><pre>' + xhr.responseText + '</pre>';
           }
         } else {
-          document.getElementById('tabla-registros').innerHTML = '<p style="color:red;">Error HTTP ' + xhr.status + '</p>';
+          document.getElementById('tabla-registros').innerHTML =
+            '<p style="color:red;">Error HTTP ' + xhr.status + '</p>';
         }
       }
     };
     xhr.send();
   }
 
+  // Construye la tabla con columnas + botones Editar / Eliminar
+  function renderTabla(datos) {
+    var columnas = Object.keys(datos[0]);
+    var html = '<table><thead><tr>';
+    for (var c = 0; c < columnas.length; c++) {
+      if (columnas[c] !== '_id') {
+        html += '<th>' + columnas[c] + '</th>';
+      }
+    }
+    html += '<th>Acciones</th></tr></thead><tbody>';
+
+    for (var r = 0; r < datos.length; r++) {
+      var mongoId = datos[r]['_id'] || '';
+      html += '<tr>';
+      for (var cc = 0; cc < columnas.length; cc++) {
+        if (columnas[cc] !== '_id') {
+          var val = datos[r][columnas[cc]];
+          if (val === null || val === undefined) val = '-';
+          html += '<td>' + val + '</td>';
+        }
+      }
+      // Serializar todo el objeto para pasar al modal
+      var jsonEsc = encodeURIComponent(JSON.stringify(datos[r]));
+      html += '<td>'
+            + '<button class="btn-editar"  onclick="abrirModal(\'' + mongoId + '\', decodeURIComponent(\'' + jsonEsc + '\'))">✏️ Editar</button>'
+            + '<button class="btn-eliminar" onclick="eliminar(\'' + mongoId + '\')">🗑️ Eliminar</button>'
+            + '</td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    document.getElementById('tabla-registros').innerHTML = html;
+  }
+
+  // ----------------------------------------------------------------
+  //  CREAR (CREATE) — guardar nuevo registro
+  // ----------------------------------------------------------------
   function guardar(coleccion) {
     var datos = {};
     var msgEl = document.getElementById('msg-' + coleccion);
@@ -521,12 +803,9 @@
         Telefono:    document.getElementById('c_telefono').value.trim()
       };
       if (!datos.ID_Cliente || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID Cliente y Nombre son obligatorios.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID Cliente y Nombre son obligatorios.', 'error'); return;
       }
-    }
-
-    else if (coleccion === 'mascotas') {
+    } else if (coleccion === 'mascotas') {
       datos = {
         ID_Mascota:       document.getElementById('m_id').value.trim(),
         Nombre:           document.getElementById('m_nombre').value.trim(),
@@ -539,12 +818,9 @@
         ID_Cliente:       document.getElementById('m_id_cliente').value.trim()
       };
       if (!datos.ID_Mascota || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID Mascota y Nombre son obligatorios.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID Mascota y Nombre son obligatorios.', 'error'); return;
       }
-    }
-
-    else if (coleccion === 'veterinarios') {
+    } else if (coleccion === 'veterinarios') {
       datos = {
         ID_Veterinario: document.getElementById('v_id').value.trim(),
         Nombre:         document.getElementById('v_nombre').value.trim(),
@@ -553,12 +829,9 @@
         Telefono:       document.getElementById('v_telefono').value.trim()
       };
       if (!datos.ID_Veterinario || !datos.Nombre) {
-        mostrarMsg(msgEl, 'ID y Nombre son obligatorios.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID y Nombre son obligatorios.', 'error'); return;
       }
-    }
-
-    else if (coleccion === 'citas') {
+    } else if (coleccion === 'citas') {
       datos = {
         ID_Cita:        document.getElementById('ci_id').value.trim(),
         Fecha:          document.getElementById('ci_fecha').value,
@@ -567,12 +840,9 @@
         ID_Veterinario: document.getElementById('ci_id_vet').value.trim()
       };
       if (!datos.ID_Cita) {
-        mostrarMsg(msgEl, 'ID Cita es obligatorio.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID Cita es obligatorio.', 'error'); return;
       }
-    }
-
-    else if (coleccion === 'tratamientos') {
+    } else if (coleccion === 'tratamientos') {
       datos = {
         ID_Tratamiento: document.getElementById('t_id').value.trim(),
         Descripcion:    document.getElementById('t_descripcion').value.trim(),
@@ -581,12 +851,9 @@
         Precio:         document.getElementById('t_precio').value
       };
       if (!datos.ID_Tratamiento) {
-        mostrarMsg(msgEl, 'ID Tratamiento es obligatorio.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID Tratamiento es obligatorio.', 'error'); return;
       }
-    }
-
-    else if (coleccion === 'expedientes') {
+    } else if (coleccion === 'expedientes') {
       datos = {
         ID_Expediente:  document.getElementById('e_id').value.trim(),
         ID_Mascota:     document.getElementById('e_id_mascota').value.trim(),
@@ -594,8 +861,7 @@
         Alerta_Roja:    document.getElementById('e_alerta').value
       };
       if (!datos.ID_Expediente) {
-        mostrarMsg(msgEl, 'ID Expediente es obligatorio.', 'error');
-        return;
+        mostrarMsg(msgEl, 'ID Expediente es obligatorio.', 'error'); return;
       }
     }
 
@@ -622,14 +888,116 @@
     xhr.send(JSON.stringify(datos));
   }
 
+  // ----------------------------------------------------------------
+  //  ACTUALIZAR (UPDATE) — modal de edición
+  // ----------------------------------------------------------------
+  function abrirModal(mongoId, jsonStr) {
+    mongoIdActual = mongoId;
+    var doc = JSON.parse(jsonStr);
+    var html = '';
+    for (var campo in doc) {
+      if (campo === '_id') continue;
+      html += '<div class="modal-form-grupo">'
+            + '<label>' + campo + ':</label>'
+            + '<input type="text" id="edit_' + campo + '" value="' + (doc[campo] !== null ? doc[campo] : '') + '">'
+            + '</div>';
+    }
+    document.getElementById('modal-campos').innerHTML = html;
+    var msgM = document.getElementById('msg-modal');
+    msgM.style.display = 'none';
+    msgM.innerText = '';
+    document.getElementById('modal-overlay').classList.add('visible');
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-overlay').classList.remove('visible');
+    mongoIdActual = '';
+  }
+
+  function guardarEdicion() {
+    // Recolectar todos los inputs del modal
+    var inputs = document.querySelectorAll('#modal-campos input');
+    var datosActualizados = {};
+    for (var i = 0; i < inputs.length; i++) {
+      var nombreCampo = inputs[i].id.replace('edit_', '');
+      datosActualizados[nombreCampo] = inputs[i].value.trim();
+    }
+
+    var msgM = document.getElementById('msg-modal');
+    msgM.style.display = 'block';
+    msgM.className = 'mensaje';
+    msgM.innerText = 'Guardando cambios...';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api/index.php?accion=actualizar&coleccion=' + coleccionActual + '&id=' + mongoIdActual, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.exito) {
+            msgM.className = 'mensaje ok';
+            msgM.innerText = '✔ Registro actualizado correctamente.';
+            setTimeout(function() {
+              cerrarModal();
+              cargarRegistros();
+            }, 1000);
+          } else {
+            msgM.className = 'mensaje error';
+            msgM.innerText = '✘ Error: ' + (resp.error || 'Error desconocido');
+          }
+        } catch(e) {
+          msgM.className = 'mensaje error';
+          msgM.innerText = '✘ Respuesta inválida del servidor.';
+        }
+      }
+    };
+    xhr.send(JSON.stringify(datosActualizados));
+  }
+
+  // ----------------------------------------------------------------
+  //  ELIMINAR (DELETE)
+  // ----------------------------------------------------------------
+  function eliminar(mongoId) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api/index.php?accion=eliminar&coleccion=' + coleccionActual + '&id=' + mongoId, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.exito) {
+            cargarRegistros(); // refrescar tabla
+          } else {
+            alert('Error al eliminar: ' + (resp.error || 'Error desconocido'));
+          }
+        } catch(e) {
+          alert('Respuesta inválida del servidor.');
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  // ----------------------------------------------------------------
+  //  UTILIDADES
+  // ----------------------------------------------------------------
   function mostrarMsg(el, texto, tipo) {
     el.innerText = texto;
     el.className = 'mensaje ' + tipo;
   }
 
-  // Cargar registros al entrar a esa sección
+  // Cargar registros al entrar a la sección
   document.getElementById('btn-ver-registros').addEventListener('click', function() {
     cargarRegistros();
+  });
+
+  // Cerrar modal al hacer click fuera
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal();
   });
 </script>
 
