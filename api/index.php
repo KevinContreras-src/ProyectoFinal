@@ -29,7 +29,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 // ============================================================
 //  CONFIGURACION DE CONEXION
 // ============================================================
-define('MONGO_URI', 'mongodb://localhost:27017');
+define('MONGO_URI', 'mongodb+srv://Kevin_Contreras:qaws120987@cluster0.llk4xoi.mongodb.net/?appName=Cluster0');
 define('MONGO_DB',  'veterinaria');
 
 // ============================================================
