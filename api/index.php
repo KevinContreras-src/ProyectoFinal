@@ -19,14 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // ---------- Autoload Composer ----------
-// Ajusta la ruta si tu vendor/ está en otro lugar
-require_once __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} else {
+    echo json_encode(['error' => 'vendor/autoload.php no encontrado. Ejecuta: composer require mongodb/mongodb']);
+    exit;
+}
 
 // ============================================================
 //  CONFIGURACION DE CONEXION
 // ============================================================
-define('MONGO_URI', getenv('MONGO_URI'));
-define('MONGO_DB',  'veterinaria');   // <-- cambia al nombre de tu base de datos
+define('MONGO_URI', 'mongodb://localhost:27017');
+define('MONGO_DB',  'veterinaria');
 
 // ============================================================
 //  COLECCIONES PERMITIDAS
@@ -42,7 +46,7 @@ $colecciones_permitidas = [
     'tratamientos',
     'tratamientos_detalle',
     'expedientes_clinicos',
-    'expedientes',       // alias interno para formulario
+    'expedientes',
     'duenos',
 ];
 
@@ -65,14 +69,12 @@ function respuesta_error($mensaje) {
     echo json_encode(['exito' => false, 'error' => $mensaje]);
 }
 
-// Convierte un cursor de MongoDB a array de arrays asociativos
 function cursor_a_array($cursor) {
     $resultado = [];
     foreach ($cursor as $doc) {
         $fila = [];
         foreach ($doc as $clave => $valor) {
             if ($clave === '_id') {
-                // Convertimos el ObjectId a string para JSON
                 $fila['_id'] = (string) $valor;
             } elseif ($valor instanceof MongoDB\BSON\UTCDateTime) {
                 $fila[$clave] = $valor->toDateTime()->format('Y-m-d');
@@ -92,28 +94,27 @@ function cursor_a_array($cursor) {
 // ============================================================
 $accion    = isset($_GET['accion'])    ? trim($_GET['accion'])    : '';
 $coleccion = isset($_GET['coleccion']) ? trim($_GET['coleccion']) : '';
+$id        = isset($_GET['id'])        ? trim($_GET['id'])        : '';
 
 // Normalizar alias del formulario 'expedientes' → colección real
 if ($coleccion === 'expedientes') {
     $coleccion = 'expedientes_clinicos';
 }
 
-// Validar colección
+// Validar colección (solo cuando hay acción)
 if ($accion !== '' && !in_array($coleccion, $colecciones_permitidas)) {
     respuesta_error("Colección '$coleccion' no permitida.");
     exit;
 }
 
 // ============================================================
-//  ACCION: listar
+//  ACCION: listar  (READ)
 // ============================================================
 if ($accion === 'listar' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $db     = conectar();
-        $cursor = $db->{$coleccion}->find(
-            [],    []
-        );
-        $datos = cursor_a_array($cursor);
+        $cursor = $db->{$coleccion}->find([], []);
+        $datos  = cursor_a_array($cursor);
         echo json_encode($datos, JSON_UNESCAPED_UNICODE);
     } catch (Exception $e) {
         respuesta_error('Error al listar: ' . $e->getMessage());
@@ -122,10 +123,10 @@ if ($accion === 'listar' && $_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 // ============================================================
-//  ACCION: insertar
+//  ACCION: insertar  (CREATE)
 // ============================================================
 if ($accion === 'insertar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $body = file_get_contents('php://input');
+    $body  = file_get_contents('php://input');
     $datos = json_decode($body, true);
 
     if (!$datos || !is_array($datos)) {
@@ -135,28 +136,19 @@ if ($accion === 'insertar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Limpiar campos vacíos opcionales
     foreach ($datos as $k => $v) {
-        if ($v === '' || $v === null) {
-            unset($datos[$k]);
-        }
+        if ($v === '' || $v === null) unset($datos[$k]);
     }
 
     // Convertir campos numéricos
-    $campos_numericos = ['Edad', 'Precio', 'Costo'];
-    foreach ($campos_numericos as $campo) {
-        if (isset($datos[$campo])) {
-            $datos[$campo] = floatval($datos[$campo]);
-        }
+    foreach (['Edad', 'Precio', 'Costo'] as $campo) {
+        if (isset($datos[$campo])) $datos[$campo] = floatval($datos[$campo]);
     }
 
-    // Validaciones mínimas por colección
-    $errores_validacion = validar_datos($coleccion, $datos);
-    if ($errores_validacion) {
-        respuesta_error($errores_validacion);
-        exit;
-    }
+    $errores = validar_datos($coleccion, $datos);
+    if ($errores) { respuesta_error($errores); exit; }
 
     try {
-        $db       = conectar();
+        $db        = conectar();
         $resultado = $db->{$coleccion}->insertOne($datos);
 
         if ($resultado->getInsertedCount() > 0) {
@@ -166,6 +158,86 @@ if ($accion === 'insertar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (Exception $e) {
         respuesta_error('Error al insertar: ' . $e->getMessage());
+    }
+    exit;
+}
+
+// ============================================================
+//  ACCION: actualizar  (UPDATE)
+// ============================================================
+if ($accion === 'actualizar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (empty($id)) {
+        respuesta_error('Se requiere el parámetro id para actualizar.');
+        exit;
+    }
+
+    $body  = file_get_contents('php://input');
+    $datos = json_decode($body, true);
+
+    if (!$datos || !is_array($datos)) {
+        respuesta_error('JSON inválido o vacío en el cuerpo de la petición.');
+        exit;
+    }
+
+    // Eliminar _id del payload si viene (no se puede actualizar el _id)
+    unset($datos['_id']);
+
+    // Limpiar campos vacíos opcionales
+    foreach ($datos as $k => $v) {
+        if ($v === '' || $v === null) unset($datos[$k]);
+    }
+
+    // Convertir campos numéricos
+    foreach (['Edad', 'Precio', 'Costo'] as $campo) {
+        if (isset($datos[$campo])) $datos[$campo] = floatval($datos[$campo]);
+    }
+
+    try {
+        $db        = conectar();
+        $objectId  = new MongoDB\BSON\ObjectId($id);
+        $resultado = $db->{$coleccion}->updateOne(
+            ['_id' => $objectId],
+            ['$set' => $datos]
+        );
+
+        if ($resultado->getMatchedCount() > 0) {
+            respuesta_ok('Documento actualizado correctamente.');
+        } else {
+            respuesta_error('No se encontró el documento con ese ID.');
+        }
+    } catch (MongoDB\Driver\Exception\InvalidArgumentException $e) {
+        respuesta_error('ID de documento inválido: ' . $e->getMessage());
+    } catch (Exception $e) {
+        respuesta_error('Error al actualizar: ' . $e->getMessage());
+    }
+    exit;
+}
+
+// ============================================================
+//  ACCION: eliminar  (DELETE)
+// ============================================================
+if ($accion === 'eliminar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (empty($id)) {
+        respuesta_error('Se requiere el parámetro id para eliminar.');
+        exit;
+    }
+
+    try {
+        $db        = conectar();
+        $objectId  = new MongoDB\BSON\ObjectId($id);
+        $resultado = $db->{$coleccion}->deleteOne(['_id' => $objectId]);
+
+        if ($resultado->getDeletedCount() > 0) {
+            respuesta_ok('Documento eliminado correctamente.');
+        } else {
+            respuesta_error('No se encontró el documento con ese ID.');
+        }
+    } catch (MongoDB\Driver\Exception\InvalidArgumentException $e) {
+        respuesta_error('ID de documento inválido: ' . $e->getMessage());
+    } catch (Exception $e) {
+        respuesta_error('Error al eliminar: ' . $e->getMessage());
     }
     exit;
 }
@@ -216,6 +288,6 @@ function validar_datos($coleccion, $datos) {
             if (empty($datos['ID_Dueno'])) return 'ID_Dueno es obligatorio.';
             break;
     }
-    return null; // sin error
+    return null;
 }
 ?>
